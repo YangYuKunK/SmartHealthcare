@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHealthcare.Domain\SmartHealthcare.Domain.csproj" />
     <ProjectReference Include="..\SmartHealthcare.Infrastructure\SmartHealthcare.Infrastructure.csproj" />
-    <ProjectReference Include="..\SmartHealthcare.Interface\SmartHealthcare.Interface.csproj" />
     <ProjectReference Include="..\SmartHealthcare.Service\SmartHealthcare.Service.csproj" />
   </ItemGroup>
 

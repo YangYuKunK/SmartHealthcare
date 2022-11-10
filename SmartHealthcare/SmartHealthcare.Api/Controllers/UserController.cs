@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartHealthcare.Domain;
 using SmartHealthcare.Service.UserInfo;
 
 namespace SmartHealthcare.Api.Controllers
@@ -23,5 +24,6 @@ namespace SmartHealthcare.Api.Controllers
         {
             _user = user;
         }
+        
     }
 }

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHealthcare.Interface\SmartHealthcare.Interface.csproj" />
+    <ProjectReference Include="..\SmartHealthcare.Infrastructure\SmartHealthcare.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
