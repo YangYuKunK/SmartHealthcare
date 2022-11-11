@@ -16,8 +16,9 @@ namespace SmartHealthcare.Interface
         /// <summary>
         /// 获取用户信息
         /// </summary>
+        /// <param name="userid">用户id</param>
         /// <returns></returns>
-        List<Tb_sys_UserInfo> GetUserLists();
+        List<Tb_sys_UserInfo> GetUserLists(int userid);
 
         /// <summary>
         /// 新增用户信息
@@ -29,7 +30,7 @@ namespace SmartHealthcare.Interface
         /// <summary>
         /// 删除该用户信息
         /// </summary>
-        /// <param name="userid"></param>
+        /// <param name="userid">用户id</param>
         /// <returns></returns>
         int DeleteUser(int userid);
 

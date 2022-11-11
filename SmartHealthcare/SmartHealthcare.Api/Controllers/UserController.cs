@@ -30,16 +30,17 @@ namespace SmartHealthcare.Api.Controllers
         /// <summary>
         /// 获取用户信息
         /// </summary>
+        /// <param name="userid">用户id</param>
         /// <returns></returns>
         /// <exception cref="Exception">捕获异常</exception>
         [HttpGet]
-        public IActionResult GetUserLists()
+        public IActionResult GetUserLists(int userid = 0)
         {
             //捕获异常
             try
             {
                 //从服务曾中用户信息
-                List<Tb_sys_UserInfo> user = _user.GetUserLists();
+                List<Tb_sys_UserInfo> user = _user.GetUserLists(userid);
                 return Ok(new
                 {
                     code = 200,
@@ -96,13 +97,6 @@ namespace SmartHealthcare.Api.Controllers
                 //抛出异常
                 throw new Exception("新增用户异常", ex);
             }
-        }
-
-
-        [HttpPost]
-        public IActionResult CreateDocterInfo()
-        {
-
         }
 
 

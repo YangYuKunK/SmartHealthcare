@@ -16,8 +16,9 @@ namespace SmartHealthcare.Service.UserInfo
         /// <summary>
         /// 获取用户信息
         /// </summary>
+        /// <param name="userid">用户id</param>
         /// <returns></returns>
-        List<Tb_sys_UserInfo> GetUserLists();
+        List<Tb_sys_UserInfo> GetUserLists(int userid);
 
         /// <summary>
         /// 新增用户信息

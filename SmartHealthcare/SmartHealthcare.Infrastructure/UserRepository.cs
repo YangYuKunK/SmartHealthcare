@@ -16,11 +16,24 @@ namespace SmartHealthcare.Infrastructure
         /// <summary>
         /// 获取用户信息
         /// </summary>
+        /// <param name="userid">用户id</param>
         /// <returns></returns>
-        public List<Tb_sys_UserInfo> GetUserLists()
+        public List<Tb_sys_UserInfo> GetUserLists(int userid)
         {
             string str = "select userid,username,useradmin,userpass	,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo";
-            return Dapper<Tb_sys_UserInfo>.Query(str);
+            //判断用户id是否为0
+            if (userid > 0)
+            {
+                str += " where userid = @id";
+                return Dapper<Tb_sys_UserInfo>.Query(str, new
+                {
+                    id = userid //用户id
+                });
+            }
+            else
+            {
+                return Dapper<Tb_sys_UserInfo>.Query(str);
+            }
         }
 
         /// <summary>
@@ -78,7 +91,8 @@ namespace SmartHealthcare.Infrastructure
         public Tb_sys_UserInfo SelectUserInfo(string admin, string pass)
         {
             string str = "select userid,username,useradmin,userpass,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo where useradmin = @useradmin and userpass = @userpass";
-            return Dapper<Tb_sys_UserInfo>.QueryFirst(str, new {
+            return Dapper<Tb_sys_UserInfo>.QueryFirst(str, new
+            {
                 useradmin = admin,
                 userpass = pass
             });

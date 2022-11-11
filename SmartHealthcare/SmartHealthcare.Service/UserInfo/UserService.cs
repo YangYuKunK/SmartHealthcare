@@ -34,10 +34,11 @@ namespace SmartHealthcare.Service.UserInfo
         /// <summary>
         /// 获取用户信息
         /// </summary>
+        /// <param name="userid">用户id</param>
         /// <returns></returns>
-        public List<Tb_sys_UserInfo> GetUserLists()
+        public List<Tb_sys_UserInfo> GetUserLists(int userid)
         {
-            List<Tb_sys_UserInfo> user = _user.GetUserLists();
+            List<Tb_sys_UserInfo> user = _user.GetUserLists(userid);
             return user;
         }
 
