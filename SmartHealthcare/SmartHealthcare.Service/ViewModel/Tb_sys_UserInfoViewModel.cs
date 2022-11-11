@@ -19,13 +19,18 @@ namespace SmartHealthcare.Service.ViewModel
         public int  UserSex { get; set; } //用户性别
         public string? UserIDCard { get; set; } //用户身份证号
         public string? UserPhone { get; set; } //用户手机号
-        public DateTime UserCreationTime { get; set; } //用户创建日期
-        public DateTime UserModificationTime { get; set; } //用户修改日期
         public int  UserDeleteState { get; set; } //用户状态(逻辑删除)
         public string? UserNumber { get; set; } //用户编号
         public string? UserAvatar { get; set; } //用户头像
         public string? UserHobby { get; set; } //用户爱好
         public decimal UserBalance { get; set; } //用户余额
         public string? UserAddress { get; set; } //用户地址
+
+        public DateTime creationTime { get; set; }//创建日期
+        public DateTime modificationTime { get; set; } //修改日期
+        public DateTime deletetime { get; set; } //删除日期
+        public string? creationPerson { get; set; } //创建人
+        public string? modificationPerson { get; set; } //修改人
+        public string? deletePerson { get; set; } //删除人
     }
 }

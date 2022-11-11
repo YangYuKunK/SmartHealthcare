@@ -19,15 +19,20 @@ namespace SmartHealthcare.Domain
         private int userAge; //用户年龄
         private int userSex; //用户性别
         private string? userIDCard; //用户身份证号
-        private string? userPhone; //用户手机号
-        private DateTime userCreationTime; //用户创建日期
-        private DateTime userModificationTime; //用户修改日期
+        private string? userPhone; //用户手机号        
         private int userDeleteState; //用户状态(逻辑删除)
         private string? userNumber; //用户编号
         private string? userAvatar; //用户头像
         private string? userHobby; //用户爱好
         private decimal userBalance; //用户余额
         private string? userAddress; //用户地址
+
+        private DateTime creationTime; //创建日期
+        private DateTime modificationTime; //修改日期
+        private DateTime deletetime; //删除日期
+        private string? creationPerson; //创建人
+        private string? modificationPerson; //修改人
+        private string? deletePerson; //删除人
 
         #region 用户id
         /// <summary>
@@ -109,26 +114,6 @@ namespace SmartHealthcare.Domain
             set { userPhone = value; }
         }
         #endregion
-        #region 用户创建日期
-        /// <summary>
-        /// 用户创建日期
-        /// </summary>
-        public DateTime UserCreationTime
-        {
-            get { return userCreationTime; }
-            set { userCreationTime = value; }
-        }
-        #endregion
-        #region 用户修改日期
-        /// <summary>
-        /// 用户修改日期
-        /// </summary>
-        public DateTime UserModificationTime
-        {
-            get { return userModificationTime; }
-            set { userModificationTime = value; }
-        }
-        #endregion
         #region 用户状态(逻辑删除)
         /// <summary>
         /// 用户状态(逻辑删除)
@@ -187,6 +172,66 @@ namespace SmartHealthcare.Domain
         {
             get { return userAddress; }
             set { userAddress = value; }
+        }
+        #endregion
+        #region 创建日期
+        /// <summary>
+        /// 创建日期
+        /// </summary>
+        public DateTime CreationTime
+        {
+            get { return creationTime; }
+            set { creationTime = value; }
+        }
+        #endregion
+        #region 修改日期
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModificationTime
+        {
+            get { return modificationTime; }
+            set { modificationTime = value; }
+        }
+        #endregion
+        #region 删除日期
+        /// <summary>
+        /// 删除日期
+        /// </summary>
+        public DateTime Deletetime
+        {
+            get { return deletetime; }
+            set { deletetime = value; }
+        }
+        #endregion
+        #region 创建人
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        public string? CreationPerson
+        {
+            get { return creationPerson; }
+            set { creationPerson = value; }
+        }
+        #endregion
+        #region 修改人
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string? ModificationPerson
+        {
+            get { return modificationPerson; }
+            set { modificationPerson = value; }
+        }
+        #endregion
+        #region 删除人
+        /// <summary>
+        /// 删除人
+        /// </summary>
+        public string? DeletePerson
+        {
+            get { return deletePerson; }
+            set { deletePerson = value; }
         }
         #endregion
     }
