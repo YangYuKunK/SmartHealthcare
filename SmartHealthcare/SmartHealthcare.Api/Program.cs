@@ -4,6 +4,9 @@ using SmartHealthcare.Service.UserInfo;
 using SmartHealthcare.Service;
 using SmartHealthcare.Infrastructure;
 using SmartHealthcare.Api;
+using log4net.Config;
+using log4net;
+using static SmartHealthcare.Api.log4net.Log4net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,25 +35,12 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).Conf
 
 #endregion
 
+#region Startup Nlog4net配置
 
-//#region AutoFac依赖注入配置
-//IHostBuilder CreateHostBuilder(string[] args) =>
-//            Host.CreateDefaultBuilder(args)
-//            .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //改用Autofac来实现依赖注入
-//                .ConfigureWebHostDefaults(webBuilder =>
-//                {
-//                    webBuilder.UseStartup<Program>();
-//                });
+Log4netHelper.Repository = LogManager.CreateRepository("NETCoreRepository");
+XmlConfigurator.Configure(Log4netHelper.Repository, new FileInfo(Environment.CurrentDirectory + "/Config/log4net.config"));
 
-//buliders.RegisterAssemblyTypes(typeof(UserService).Assembly)
-//                .Where(t => t.Name.EndsWith("Service"))
-//                .AsImplementedInterfaces();
-
-//buliders.RegisterAssemblyTypes(typeof(UserRepository).Assembly)
-//                .Where(t => t.Name.EndsWith("Repository"))
-//                .AsImplementedInterfaces();
-
-//#endregion
+#endregion
 
 var app = builder.Build();
 
@@ -60,6 +50,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+#region 身份认证及授权
+
+app.UseAuthentication();//身份认证
+app.UseAuthorization();//授权
+
+#endregion
 
 app.UseHttpsRedirection();
 

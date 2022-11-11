@@ -32,5 +32,6 @@ namespace SmartHealthcare.Service.UserInfo
         /// <param name="userid">用户id</param>
         /// <returns></returns>
         int DeleteUser(int userid);
+        Tb_sys_UserInfo SelectUserInfo(string admin, string pass);
     }
 }

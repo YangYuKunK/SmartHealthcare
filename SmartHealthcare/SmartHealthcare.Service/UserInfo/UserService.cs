@@ -103,5 +103,30 @@ namespace SmartHealthcare.Service.UserInfo
                 return 0;
             }
         }
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="admin">账号</param>
+        /// <param name="pass">密码</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public Tb_sys_UserInfo SelectUserInfo(string admin, string pass)
+        {
+            //捕获异常
+            try
+            {
+                //获取token
+                //登录
+                Tb_sys_UserInfo user = _user.SelectUserInfo(admin, pass);
+                //返回数据
+                return user;
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("用户登录异常",ex);
+            }
+        }
     }
 }

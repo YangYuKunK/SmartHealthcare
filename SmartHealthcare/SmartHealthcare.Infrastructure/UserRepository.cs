@@ -68,5 +68,21 @@ namespace SmartHealthcare.Infrastructure
                 id = userid //用户id
             });
         }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="admin">账号</param>
+        /// <param name="pass">密码</param>
+        /// <returns></returns>
+        public Tb_sys_UserInfo SelectUserInfo(string admin, string pass)
+        {
+            string str = "select userid,username,useradmin,userpass,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo where useradmin = @useradmin and userpass = @userpass";
+            return Dapper<Tb_sys_UserInfo>.QueryFirst(str, new {
+                useradmin = admin,
+                userpass = pass
+            });
+
+        }
     }
 }
