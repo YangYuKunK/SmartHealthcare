@@ -54,8 +54,9 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
 
+        #region 注册
         /// <summary>
-        /// 新增用户信息
+        /// 新增用户信息(患者注册)
         /// </summary>
         /// <param name="user">用户视图模型</param>
         /// <returns></returns>
@@ -97,6 +98,16 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
 
+
+        [HttpPost]
+        public IActionResult CreateDocterInfo()
+        {
+
+        }
+
+
+        #endregion
+
         /// <summary>
         /// 删除该用户信息
         /// </summary>
@@ -137,6 +148,7 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("删除用户信息异常", ex);
             }
         }
+        #region 登录
 
         /// <summary>
         /// 用户登录
@@ -198,5 +210,9 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("用户登录异常", ex);
             }
         }
+
+        #endregion
+
+        
     }
 }

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\SmartHealthcare.Service\SmartHealthcare.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="JWT\" />
+  </ItemGroup>
+
 </Project>

@@ -174,6 +174,7 @@ namespace SmartHealthcare.Domain
             set { userAddress = value; }
         }
         #endregion
+
         #region 创建日期
         /// <summary>
         /// 创建日期

@@ -76,6 +76,9 @@ insert into tb_sys_userinfo (userid,username,useradmin,userpass	,userage,usersex
 
 select userid,username,useradmin,userpass	,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo
 
+
+select userid,username,useradmin,userpass,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo where useradmin = '2862547662' and userpass = '123456'
+
 -- 新建角色信息表
 create table tb_sys_roleinfo
 (
@@ -93,13 +96,7 @@ create table tb_sys_roleinfo
 create table tb_sys_userrole
 (
 	userid							int,															-- 用户id
-	roleid							int,															-- 角色id
-	creationtime				date,															-- 创建时间
-	modificationtime		date,															-- 修改时间
-	deletetime					date,															-- 删除时间
-	creationperson			varchar(20),											-- 创建人
-	modificationperson	varchar(20),											-- 修改人
-	deleteperson				varchar(20)												-- 删除人
+	roleid							int 															-- 角色id
 )
 
 select userid,roleid,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userrole
