@@ -57,11 +57,12 @@ create table tb_sys_userinfo
 	userage							int,															-- 用户年龄
 	usersex							int,										 					-- 用户性别
 	useridcard					varchar(18),											-- 用户身份证号
-	userphone						varchar(11),											-- 用户状态(逻辑删除)
-	userdeletestate			int,															-- 用户编号
-	usernumber					varchar(50),											-- 用户头像
+	userphone						varchar(11),											-- 用户手机号
+	userdeletestate			int,															-- 用户状态(逻辑删除)
+	usernumber					varchar(50),											-- 用户编号
+	useravatar					varchar(100),											-- 用户头像
 	userhobby						varchar(100),											-- 用户爱好
-	userbalance					decimal(2),										  	-- 用户余额
+	userbalance					decimal(7,2),										  -- 用户余额
 	useraddress					varchar(100),											-- 用户地址
 	creationtime				date,															-- 创建时间
 	modificationtime		date,															-- 修改时间
@@ -70,6 +71,10 @@ create table tb_sys_userinfo
 	modificationperson	varchar(20),											-- 修改人
 	deleteperson				varchar(20)												-- 删除人
 )
+
+insert into tb_sys_userinfo (userid,username,useradmin,userpass	,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson) values (null,'杨宇坤','2862547662','123456',20,1,'130435202020202020','17732072862',0,'user_2003_0005','','睡觉',34.27,'河北邯郸',CURRENT_TIMESTAMP,null,null,'杨宇坤','','')
+
+select userid,username,useradmin,userpass	,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo
 
 -- 新建角色信息表
 create table tb_sys_roleinfo

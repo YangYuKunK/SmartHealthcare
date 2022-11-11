@@ -15,27 +15,7 @@ namespace SmartHealthcare.Infrastructure
     /// <typeparam name="T"></typeparam>
     public static class Dapper<T>
     {
-        //mysql链接语句/sqlserver也行
-        readonly static string? connection = "Data Source=127.0.0.1;database=rbactest;Uid=root;Pwd=yang;SSLMode=none";
-
-        //进行obj锁定
-        private static object obj = new object();
-        //单例
-        private static IDbConnection dbConnection
-        {
-            get
-            {
-                lock (obj)
-                {
-                    if (dbConnection.State == ConnectionState.Closed)
-                    {
-                        dbConnection.Open();
-                    }
-                }
-                return dbConnection;
-
-            }
-        }
+        static string connection = "Data Source=127.0.0.1;database=smarthealthcaredata;Uid=root;Pwd=yang;SSLMode=none";
 
         /// <summary>
         /// 执行增删改的方法
@@ -43,11 +23,12 @@ namespace SmartHealthcare.Infrastructure
         /// <param name="sql"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static int RUD(string sql, object? param = null)
+        public static int RUD(string sql, object param = null)
         {
             using (IDbConnection conn = new MySqlConnection(connection))
             {
                 conn.Open();
+
                 return conn.Execute(sql, param);
             }
 
@@ -60,15 +41,19 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public static List<T> Query(string sql)
         {
+            using (IDbConnection conn = new MySqlConnection(connection))
+            {
+                conn.Open();
 
-            List<T> list = dbConnection.Query<T>(sql).ToList();
-            return list;
+                List<T> list = conn.Query<T>(sql).ToList();
+
+                return list;
+            }
 
         }
 
-       
 
-
+        // <summary>
         /// 查询某条数据的方法
         /// </summary>
         /// <param name="sql"></param>
@@ -83,6 +68,7 @@ namespace SmartHealthcare.Infrastructure
 
                 return list;
             }
+
         }
 
 
@@ -101,7 +87,6 @@ namespace SmartHealthcare.Infrastructure
                 return conn.QueryFirst<T>(sql, param);
             }
 
-
         }
 
         /// <summary>
@@ -119,7 +104,6 @@ namespace SmartHealthcare.Infrastructure
                 return conn.QueryFirstOrDefault<T>(sql, param);
             }
 
-
         }
 
         /// <summary>
@@ -136,7 +120,6 @@ namespace SmartHealthcare.Infrastructure
 
                 return conn.QuerySingle<T>(sql, param);
             }
-
 
         }
 
@@ -179,7 +162,7 @@ namespace SmartHealthcare.Infrastructure
             {
                 skip = (pageIndex - 1) * pageSize + 1;
             }
-            StringBuilder sb = new();
+            StringBuilder sb = new StringBuilder();
             sb.AppendFormat("SELECT COUNT(1) FROM {0} where {1};", tableName, where);
             sb.AppendFormat(@"SELECT  {0}
                                 FROM(SELECT ROW_NUMBER() OVER(ORDER BY {3}) AS RowNum,{0}

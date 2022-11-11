@@ -18,5 +18,19 @@ namespace SmartHealthcare.Interface
         /// </summary>
         /// <returns></returns>
         List<Tb_sys_UserInfo> GetUserLists();
+
+        /// <summary>
+        /// 新增用户信息
+        /// </summary>
+        /// <param name="user">用户数据模型</param>
+        /// <returns></returns>
+        int CreateUserInfo(Tb_sys_UserInfo user);
+
+        /// <summary>
+        /// 删除该用户信息
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        int DeleteUser(int userid);
     }
 }

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using AutoMapper;
 using SmartHealthcare.Domain;
 using SmartHealthcare.Interface;
+using SmartHealthcare.Service.ViewModel;
 
 namespace SmartHealthcare.Service.UserInfo
 {
@@ -18,13 +19,16 @@ namespace SmartHealthcare.Service.UserInfo
         /// 依赖注入
         /// </summary>
         IUserRepository _user;
+        readonly IMapper _mapper;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="user">用户仓储接口</param>
-        public UserService(IUserRepository user)
+        /// <param name="mapper">automapper</param>
+        public UserService(IUserRepository user, IMapper mapper)
         {
             _user = user;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -35,6 +39,69 @@ namespace SmartHealthcare.Service.UserInfo
         {
             List<Tb_sys_UserInfo> user = _user.GetUserLists();
             return user;
+        }
+
+        /// <summary>
+        /// 新增用户信息
+        /// </summary>
+        /// <param name="user">用户试图模型</param>
+        /// <returns></returns>
+        public int CreateUserInfo(Tb_sys_UserInfoViewModel user)
+        {
+            //捕获异常
+            try
+            {
+                //当前时间
+                user.creationTime = DateTime.Now;
+                //创建人
+                user.creationPerson = user.UserName;
+                //其余时间为空
+                user.modificationTime = Convert.ToDateTime(null);
+                user.deletetime = Convert.ToDateTime(null);
+                //映射模型
+                Tb_sys_UserInfo users = _mapper.Map<Tb_sys_UserInfo>(user);
+                //新增用户信息
+                int i = _user.CreateUserInfo(users);
+                //返回数据
+                return i;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("新增用户信息异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 删除该用户信息
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public int DeleteUser(int userid)
+        {
+            //判断用户id是否为0
+            if (userid != 0)
+            {
+                //捕获异常
+                try
+                {
+                    //删除该用户信息
+                    int i = _user.DeleteUser(userid);
+                    //返回数据
+                    return i;
+                }
+                catch (Exception ex)
+                {
+                    //抛出异常
+                    throw new Exception("删除该用户信息异常",ex);
+                }
+            }
+            else
+            {
+                //返回数据
+                return 0;
+            }
         }
     }
 }
