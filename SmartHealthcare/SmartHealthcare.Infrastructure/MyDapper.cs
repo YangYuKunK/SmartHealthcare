@@ -7,7 +7,7 @@ using Dapper;
 using System.Data;
 using MySql.Data.MySqlClient;
 
-namespace RBAC_Infrastructure
+namespace SmartHealthcare.Infrastructure
 {
     /// <summary>
     /// 定义一个Dapper泛型通用类，来完成通用增删改查的写法

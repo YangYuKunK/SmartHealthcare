@@ -24,6 +24,32 @@ namespace SmartHealthcare.Api.Controllers
         {
             _user = user;
         }
-        
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpGet]
+        public ActionResult GetUserLists()
+        {
+            //捕获异常
+            try
+            {
+                //从服务曾中用户信息
+                List<Tb_sys_UserInfo> user= _user.GetUserLists();
+                return Ok(new
+                {
+                    code = 200,
+                    msg = "成功",
+                    data = user,
+                });
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("获取用户信息异常",ex);
+            }
+        }
     }
 }

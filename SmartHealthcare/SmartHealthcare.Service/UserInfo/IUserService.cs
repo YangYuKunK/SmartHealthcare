@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartHealthcare.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,10 @@ namespace SmartHealthcare.Service.UserInfo
     /// </summary>
     public interface IUserService
     {
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <returns></returns>
+        List<Tb_sys_UserInfo> GetUserLists();
     }
 }
