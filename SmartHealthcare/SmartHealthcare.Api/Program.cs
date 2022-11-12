@@ -51,6 +51,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication(); //登录验证机制
+
+app.UseHttpsRedirection();
+app.UseCors(a => a.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); //允许所有网站进行访问
+
+app.UseAuthorization();
 
 #region 身份认证及授权
 
@@ -58,10 +64,6 @@ app.UseAuthentication();//身份认证
 app.UseAuthorization();//授权
 
 #endregion
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

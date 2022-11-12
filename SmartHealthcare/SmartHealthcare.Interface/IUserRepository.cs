@@ -41,5 +41,12 @@ namespace SmartHealthcare.Interface
         /// <param name="pass">密码</param>
         /// <returns></returns>
         Tb_sys_UserInfo SelectUserInfo(string admin, string pass);
+
+        /// <summary>
+        /// 编辑用户信息
+        /// </summary>
+        /// <param name="user">用户数据模型</param>
+        /// <returns></returns>
+        int UpdateDeleteUser(Tb_sys_UserInfo user);
     }
 }

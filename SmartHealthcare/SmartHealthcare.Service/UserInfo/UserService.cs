@@ -74,7 +74,7 @@ namespace SmartHealthcare.Service.UserInfo
         }
 
         /// <summary>
-        /// 删除该用户信息
+        /// 删除该用户信息(真删)
         /// </summary>
         /// <param name="userid">用户id</param>
         /// <returns></returns>
@@ -95,7 +95,7 @@ namespace SmartHealthcare.Service.UserInfo
                 catch (Exception ex)
                 {
                     //抛出异常
-                    throw new Exception("删除该用户信息异常",ex);
+                    throw new Exception("删除该用户信息异常", ex);
                 }
             }
             else
@@ -126,7 +126,44 @@ namespace SmartHealthcare.Service.UserInfo
             catch (Exception ex)
             {
                 //抛出异常
-                throw new Exception("用户登录异常",ex);
+                throw new Exception("用户登录异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 逻辑删除
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public int DeleteStateUser(int userid)
+        {
+            //捕获异常
+            try
+            {
+                //判断用户id是否为0
+                if (userid != 0)
+                {
+                    //逻辑删除
+                    //获取该条用户信息
+                    List<Tb_sys_UserInfo> userlist = _user.GetUserLists(userid);
+                    Tb_sys_UserInfo user = userlist[0];
+                    //给予删除审计信息
+                    user.Deletetime = DateTime.Now;
+                    user.DeletePerson = user.UserName;
+                    //编辑用户信息
+                    int i = _user.UpdateDeleteUser(user);
+                    return i;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("逻辑删除异常", ex);
             }
         }
     }

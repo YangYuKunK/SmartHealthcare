@@ -102,8 +102,10 @@ namespace SmartHealthcare.Api.Controllers
 
         #endregion
 
+        #region 删除
+
         /// <summary>
-        /// 删除该用户信息
+        /// 删除该用户信息(真删)
         /// </summary>
         /// <param name="userid">用户id</param>
         /// <returns></returns>
@@ -142,6 +144,52 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("删除用户信息异常", ex);
             }
         }
+
+        /// <summary>
+        /// 逻辑删除
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpPut]
+        public IActionResult UpdateDeleteUser(int userid = 0)
+        {
+            //捕获异常
+            try
+            {
+                //删除用户
+                int i = _user.DeleteStateUser(userid);
+                if (i >= 1)
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 200,
+                        msg = "删除成功",
+                        data = i
+                    });
+                }
+                else
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 400,
+                        msg = "删除失败",
+                        data = i
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("逻辑删除异常", ex);
+            }
+        }
+
+
+        #endregion
+
         #region 登录
 
         /// <summary>
@@ -160,7 +208,7 @@ namespace SmartHealthcare.Api.Controllers
                 //判断账号或密码是否为空
                 if (!string.IsNullOrEmpty(admin) || !string.IsNullOrEmpty(pass))
                 {
-                    Tb_sys_UserInfo user = _user.SelectUserInfo(admin,pass);
+                    Tb_sys_UserInfo user = _user.SelectUserInfo(admin, pass);
                     if (user.UserId != 0)
                     {
                         //记录日志
@@ -207,6 +255,6 @@ namespace SmartHealthcare.Api.Controllers
 
         #endregion
 
-        
+
     }
 }

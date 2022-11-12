@@ -98,5 +98,38 @@ namespace SmartHealthcare.Infrastructure
             });
 
         }
+
+        /// <summary>
+        /// 编辑用户信息
+        /// </summary>
+        /// <param name="user">用户数据模型</param>
+        /// <returns></returns>
+        public int UpdateDeleteUser(Tb_sys_UserInfo user)
+        {
+            string str = "update tb_sys_userinfo set username = @name,useradmin = @admin,userpass = @pass,userage = @age,usersex = @sex,useridcard = @idcard,userphone = @phone,userdeletestate = @deletestate,usernumber = @number,useravatar = @avatar,userhobby = @hobby,userbalance = @balance,useraddress = @dress,creationtime = @addtime,modificationtime = @upttime,deletetime = @deltime,creationperson = @addren,modificationperson = @uptren,deleteperson = @delren where = userid = @uid";
+            return Dapper<int>.RUD(str, new
+            {
+                uid = user.UserId, //用户id
+                username = user.UserName, //用户姓名
+                admin = user.UserAdmin, //用户登录账号
+                pass = user.UserPass, //用户登录密码
+                age = user.UserAge, //用户年龄
+                sex = user.UserSex, //用户性别
+                idcard = user.UserIDCard, //用户身份证号
+                phone = user.UserPhone, //用户手机号
+                state = user.UserDeleteState, //逻辑删除
+                number = user.UserNumber, //用户编号
+                img = user.UserAvatar, //用户头像
+                hobby = user.UserHobby, //用户爱好
+                money = user.UserBalance, //用户余额
+                dress = user.UserAddress, //用户地址
+                createdate = user.CreationTime, //创建时间
+                updatetime = DateTime.Now, //修改时间
+                deletetime = user.Deletetime, //删除时间
+                createname = user.CreationPerson, //创建人
+                updatename = user.UserName, //修改人
+                deletename = user.DeletePerson //删除人
+            });
+        }
     }
 }
