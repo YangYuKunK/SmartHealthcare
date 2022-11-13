@@ -72,6 +72,8 @@ create table tb_sys_userinfo
 	deleteperson				varchar(20)												-- 删除人
 )
 
+select userid,username,useradmin,userpass,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo where userphone = '' or username = ''
+
 insert into tb_sys_userinfo (userid,username,useradmin,userpass	,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson) values (null,'杨宇坤','2862547662','123456',20,1,'130435202020202020','17732072862',0,'user_2003_0005','','睡觉',34.27,'河北邯郸',CURRENT_TIMESTAMP,null,null,'杨宇坤','','')
 
 select userid,username,useradmin,userpass	,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo
@@ -140,8 +142,8 @@ create table tb_sys_DoctorInfo
 -- 新建医生职称表
 create table tb_sys_Physiciantitle
 (
-	physicianid	int primary key auto_increment,	-- 医生职称id
-	physicianid	varchar(10)											-- 医生职称名称
+	physicianid			int primary key auto_increment,	-- 医生职称id
+	physicianname 	varchar(10)											-- 医生职称名称
 )
 
 -- 新建商品信息表
