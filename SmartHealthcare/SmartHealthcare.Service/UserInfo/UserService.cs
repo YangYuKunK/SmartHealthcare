@@ -38,7 +38,9 @@ namespace SmartHealthcare.Service.UserInfo
         /// <returns></returns>
         public List<Tb_sys_UserInfo> GetUserLists(int userid)
         {
+            //获取用户信息
             List<Tb_sys_UserInfo> user = _user.GetUserLists(userid);
+            //返回数据
             return user;
         }
 
@@ -164,6 +166,65 @@ namespace SmartHealthcare.Service.UserInfo
             {
                 //抛出异常
                 throw new Exception("逻辑删除异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 条件查询用户信息
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public List<Tb_sys_UserInfo> GetUserListPhoneAndName(string? userphone, string? username)
+        {
+            //捕获异常
+            try
+            {
+                List<Tb_sys_UserInfo> user = new();
+                //判断用户手机号和姓名是否为空
+                if (!string.IsNullOrEmpty(userphone) || !string.IsNullOrEmpty(username))
+                {
+                    //获取用户信息
+                    user = _user.GetUserListPhoneAndName(userphone, username);
+                    //返回数据
+                    return user;
+                }
+                else
+                {
+                    //返回数据
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("条件查询用户信息异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// /// 编辑用户信息
+        /// </summary>
+        /// <param name="users">用户视图模型</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public int UpdateUserInfo(Tb_sys_UserInfoViewModel users)
+        {
+            //捕获异常
+            try
+            {
+                //映射模型
+                Tb_sys_UserInfo user = _mapper.Map<Tb_sys_UserInfo>(users);
+                //编辑用户信息
+                int i = _user.UpdateDeleteUser(user);
+                //返回数据
+                return i;
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("编辑用户信息异常",ex);
             }
         }
     }

@@ -48,5 +48,13 @@ namespace SmartHealthcare.Interface
         /// <param name="user">用户数据模型</param>
         /// <returns></returns>
         int UpdateDeleteUser(Tb_sys_UserInfo user);
+
+        /// <summary>
+        /// 条件查询用户信息
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        List<Tb_sys_UserInfo> GetUserListPhoneAndName(string? userphone, string? username);
     }
 }

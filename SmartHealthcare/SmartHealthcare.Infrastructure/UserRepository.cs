@@ -131,5 +131,21 @@ namespace SmartHealthcare.Infrastructure
                 deletename = user.DeletePerson //删除人
             });
         }
+
+        /// <summary>
+        /// 条件查询用户信息
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        public List<Tb_sys_UserInfo> GetUserListPhoneAndName(string userphone, string username)
+        {
+            string str = "select userid,username,useradmin,userpass,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo where userphone = @phone or username = @name";
+            return Dapper<Tb_sys_UserInfo>.Query(str, new
+            {
+                phone = userphone, //用户手机号
+                name = username //用户姓名
+            });
+        }
     }
 }

@@ -54,6 +54,35 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("获取用户信息异常", ex);
             }
         }
+        /// <summary>
+        /// /// 条件查询用户信息
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpGet]
+        public IActionResult GetUserListPhoneAndName(string? userphone, string? username)
+        {
+            //捕获异常
+            try
+            {
+                //获取用户信息
+                List<Tb_sys_UserInfo> user = _user.GetUserListPhoneAndName(userphone, username);
+                //返回数据
+                return Ok(new
+                {
+                    code = 200,
+                    msg = "查询成功",
+                    data = user
+                });
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("查询条件异常", ex);
+            }
+        }
 
         #region 注册
         /// <summary>
@@ -255,6 +284,47 @@ namespace SmartHealthcare.Api.Controllers
 
         #endregion
 
+        /// <summary>
+        /// 编辑用户信息
+        /// </summary>
+        /// <param name="user">用户视图模型</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpPut]
+        public IActionResult UpdateUserInfo(Tb_sys_UserInfoViewModel user)
+        {
+            //捕获异常
+            try
+            {
+                //编辑用户信息
+                int i = _user.UpdateUserInfo(user);
+                if (i >= 1)
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 200,
+                        msg = "编辑成功",
+                        data = i
+                    });
+                }
+                else
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 400,
+                        msg = "编辑失败",
+                        data = i
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("编辑用户信息异常",ex);
+            }
+        }
 
     }
 }
