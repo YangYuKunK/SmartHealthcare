@@ -38,6 +38,7 @@ namespace SmartHealthcare.Service.UserInfo
         /// <returns></returns>
         public List<Tb_sys_UserInfo> GetUserLists(int userid)
         {
+
             //获取用户信息
             List<Tb_sys_UserInfo> user = _user.GetUserLists(userid);
             //返回数据
