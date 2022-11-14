@@ -50,7 +50,7 @@ namespace SmartHealthcare.Service.UserInfo
         int DeleteStateUser(int userid);
 
         /// <summary>
-        /// 条件查询用户信息
+        /// 条件查询用户信息(未加入回收站)
         /// </summary>
         /// <param name="userphone">用户手机号</param>
         /// <param name="username">用户姓名</param>
@@ -58,10 +58,25 @@ namespace SmartHealthcare.Service.UserInfo
         List<Tb_sys_UserInfo> GetUserListPhoneAndName(string? userphone, string? username);
 
         /// <summary>
+        /// 条件查询用户信息(已加入回收站)
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        List<Tb_sys_UserInfo> GetDeleteUserListPhoneAndName(string? userphone, string? username);
+
+        /// <summary>
         /// 编辑用户信息
         /// </summary>
         /// <param name="user">用户视图模型</param>
         /// <returns></returns>
         int UpdateUserInfo(Tb_sys_UserInfoViewModel user);
+
+        /// <summary>
+        /// 获取回收站用户
+        /// </summary>
+        /// <param name="userid">用户is</param>
+        /// <returns></returns>
+        List<Tb_sys_UserInfo> GetDeleteUserList(int userid);
     }
 }

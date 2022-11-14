@@ -158,11 +158,20 @@ namespace SmartHealthcare.Service.UserInfo
                 {
                     //逻辑删除
                     //获取该条用户信息
-                    List<Tb_sys_UserInfo> userlist = _user.GetUserLists(userid);
+                    List<Tb_sys_UserInfo> userlist = _user.GetDeleteUserList(userid);
                     Tb_sys_UserInfo user = userlist[0];
                     //给予删除审计信息
                     user.Deletetime = DateTime.Now;
                     user.DeletePerson = user.UserName;
+                    //变更用户删除状态
+                    if (user.UserDeleteState == 0)
+                    {
+                        user.UserDeleteState = 1;
+                    }
+                    else if (user.UserDeleteState == 1)
+                    {
+                        user.UserDeleteState = 0;
+                    }
                     //编辑用户信息
                     int i = _user.UpdateDeleteUser(user);
                     return i;
@@ -180,7 +189,7 @@ namespace SmartHealthcare.Service.UserInfo
         }
 
         /// <summary>
-        /// 条件查询用户信息
+        /// 条件查询用户信息(未加入回收站)
         /// </summary>
         /// <param name="userphone">用户手机号</param>
         /// <param name="username">用户姓名</param>
@@ -200,8 +209,48 @@ namespace SmartHealthcare.Service.UserInfo
                     //返回数据
                     return user;
                 }
+                //为空调用GetUserLists方法
                 else
                 {
+                    //调用获取用户信息方法
+                    user = GetUserLists(0);
+                    //返回数据
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("条件查询用户信息异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 条件查询用户信息(已加入回收站)
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public List<Tb_sys_UserInfo> GetDeleteUserListPhoneAndName(string? userphone, string? username)
+        {
+            //捕获异常
+            try
+            {
+                List<Tb_sys_UserInfo> user = new();
+                //判断用户手机号和姓名是否为空
+                if (!string.IsNullOrEmpty(userphone) || !string.IsNullOrEmpty(username))
+                {
+                    //获取用户信息
+                    user = _user.GetDeleteUserListPhoneAndName(userphone, username);
+                    //返回数据
+                    return user;
+                }
+                //为空调用GetUserLists方法
+                else
+                {
+                    //调用获取用户信息方法
+                    user = GetDeleteUserList(0);
                     //返回数据
                     return user;
                 }
@@ -235,6 +284,29 @@ namespace SmartHealthcare.Service.UserInfo
             {
                 //抛出异常
                 throw new Exception("编辑用户信息异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取回收站用户
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public List<Tb_sys_UserInfo> GetDeleteUserList(int userid)
+        {
+            //捕获异常
+            try
+            {
+                //获取用户信息
+                List<Tb_sys_UserInfo> user = _user.GetDeleteUserList(0);
+                //返回数据
+                return user;
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("获取回收站用户信息异常",ex);
             }
         }
     }

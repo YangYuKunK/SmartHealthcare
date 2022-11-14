@@ -27,6 +27,8 @@ namespace SmartHealthcare.Api.Controllers
             _user = user;
         }
 
+        #region 获取用户信息
+
         /// <summary>
         /// 获取用户信息
         /// </summary>
@@ -55,7 +57,7 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
         /// <summary>
-        /// /// 条件查询用户信息
+        /// /// 条件查询用户信息(未加入回收站)
         /// </summary>
         /// <param name="userphone">用户手机号</param>
         /// <param name="username">用户姓名</param>
@@ -83,6 +85,65 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("查询条件异常", ex);
             }
         }
+        /// <summary>
+        /// /// 条件查询用户信息(已加入回收站)
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpGet]
+        public IActionResult GetDeleteUserListPhoneAndName(string? userphone, string? username)
+        {
+            //捕获异常
+            try
+            {
+                //获取用户信息
+                List<Tb_sys_UserInfo> user = _user.GetDeleteUserListPhoneAndName(userphone, username);
+                //返回数据
+                return Ok(new
+                {
+                    code = 200,
+                    msg = "查询成功",
+                    data = user
+                });
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("查询条件异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取回收站用户
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpGet]
+        public IActionResult GetDeleteUserList()
+        {
+            //捕获异常
+            try
+            {
+                //获取回收站用户
+                List<Tb_sys_UserInfo> user = _user.GetDeleteUserList(0);
+                //返回数据
+                return Ok(new
+                {
+                    code = 200,
+                    msg = "查询成功",
+                    data = user
+                });
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("获取回收站用户异常", ex);
+            }
+        }
+
+        #endregion
 
         #region 注册
         /// <summary>
@@ -128,6 +189,40 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
 
+
+        #endregion
+
+        #region 文件流
+
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        /// <param name="file">图片路径</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult UpLoad(IFormFile file)
+        {
+            //捕获异常
+            try
+            {
+                //分析绝对路径
+                string rootdir = AppContext.BaseDirectory.Split(@"\bin\")[0];
+                string fname = DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetExtension(file.FileName);
+                var path = rootdir + @"/img/" + fname;
+                using (FileStream fs = System.IO.File.Create(path))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();//清空文件流
+                }
+                //返回文件静态路径
+                return Ok(new { newFileName = "http://192.168.139.23:8008/" + fname });
+            }
+            catch (Exception)
+            {
+                //抛出异常
+                throw new Exception("文件上传异常");
+            }
+        }
 
         #endregion
 

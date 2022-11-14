@@ -56,5 +56,20 @@ namespace SmartHealthcare.Interface
         /// <param name="username">用户姓名</param>
         /// <returns></returns>
         List<Tb_sys_UserInfo> GetUserListPhoneAndName(string? userphone, string? username);
+
+        /// <summary>
+        /// 条件查询用户信息(已加入回收站)
+        /// </summary>
+        /// <param name="userphone">用户手机号</param>
+        /// <param name="username">用户姓名</param>
+        /// <returns></returns>
+        List<Tb_sys_UserInfo> GetDeleteUserListPhoneAndName(string? userphone, string? username);
+
+        /// <summary>
+        /// 获取回收站用户
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        List<Tb_sys_UserInfo> GetDeleteUserList(int userid);
     }
 }
