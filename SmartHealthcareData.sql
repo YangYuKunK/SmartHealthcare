@@ -154,6 +154,7 @@ create table Tb_sys_GoodsInfo
 	GoodsPrice					decimal(2),										  -- 商品价格
 	GoodsIsState				int,														-- 是否有货
 	GoodsShelfState			int,														-- 上下架
+	GoodsDeleteState		int,														-- 是否删除
 	GoodsNumber					int,														-- 存货数量
 	GoodsImg						varchar(100),										-- 商品图片
 	ProductID						varchar(20),										-- 商品编码

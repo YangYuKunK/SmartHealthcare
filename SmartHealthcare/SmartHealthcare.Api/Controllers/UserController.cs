@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartHealthcare.Api.log4net;
 using SmartHealthcare.Domain;
+using SmartHealthcare.Service.Upoad;
 using SmartHealthcare.Service.UserInfo;
 using SmartHealthcare.Service.ViewModel;
 
@@ -18,13 +19,16 @@ namespace SmartHealthcare.Api.Controllers
         /// 依赖注入
         /// </summary>
         IUserService _user;
+        IUpoadService _upoad;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="user">用户服务接口</param>
-        public UserController(IUserService user)
+        /// <param name="upoad">文件上传服务接口</param>
+        public UserController(IUserService user, IUpoadService upoad)
         {
             _user = user;
+            _upoad = upoad;
         }
 
         #region 获取用户信息
@@ -205,17 +209,20 @@ namespace SmartHealthcare.Api.Controllers
             //捕获异常
             try
             {
-                //分析绝对路径
-                string rootdir = AppContext.BaseDirectory.Split(@"\bin\")[0];
-                string fname = DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetExtension(file.FileName);
-                var path = rootdir + @"/img/" + fname;
-                using (FileStream fs = System.IO.File.Create(path))
-                {
-                    file.CopyTo(fs);
-                    fs.Flush();//清空文件流
-                }
-                //返回文件静态路径
-                return Ok(new { newFileName = "http://192.168.139.23:8008/" + fname });
+                //定义文件名
+                string fname = "";
+                //获取文件名并赋值
+                fname = _upoad.UpLoad(file);
+                ////分析绝对路径
+                //string rootdir = AppContext.BaseDirectory.Split(@"\bin\")[0];
+                //string fname = DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetExtension(file.FileName);
+                //var path = rootdir + @"/img/" + fname;
+                //using (FileStream fs = System.IO.File.Create(path))
+                //{
+                //    file.CopyTo(fs);
+                //    fs.Flush();//清空文件流
+                //}
+                return Ok(new { newFileName = "https://6bj3594361.zicp.fun/" + fname });
             }
             catch (Exception)
             {

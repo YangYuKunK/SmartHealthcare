@@ -58,13 +58,6 @@ namespace SmartHealthcare.Service.UserInfo
                 int i = 0;
                 if (user.UserSex == 0 || user.UserSex == 1)
                 {
-                    //当前时间
-                    user.creationTime = DateTime.Now;
-                    //创建人
-                    user.creationPerson = user.UserName;
-                    //其余时间为空
-                    user.modificationTime = Convert.ToDateTime(null);
-                    user.deletetime = Convert.ToDateTime(null);
                     //映射模型
                     Tb_sys_UserInfo users = _mapper.Map<Tb_sys_UserInfo>(user);
                     //新增用户信息
@@ -161,7 +154,7 @@ namespace SmartHealthcare.Service.UserInfo
                     List<Tb_sys_UserInfo> userlist = _user.GetDeleteUserList(userid);
                     Tb_sys_UserInfo user = userlist[0];
                     //给予删除审计信息
-                    user.Deletetime = DateTime.Now;
+                    user.Deletetime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     user.DeletePerson = user.UserName;
                     //变更用户删除状态
                     if (user.UserDeleteState == 0)
@@ -173,7 +166,7 @@ namespace SmartHealthcare.Service.UserInfo
                         user.UserDeleteState = 0;
                     }
                     //编辑用户信息
-                    int i = _user.UpdateDeleteUser(user);
+                    int i = _user.UpdateUser(user);
                     return i;
                 }
                 else
@@ -275,8 +268,10 @@ namespace SmartHealthcare.Service.UserInfo
             {
                 //映射模型
                 Tb_sys_UserInfo user = _mapper.Map<Tb_sys_UserInfo>(users);
+                //给审计字段赋值
+                user.ModificationTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 //编辑用户信息
-                int i = _user.UpdateDeleteUser(user);
+                int i = _user.UpdateUser(user);
                 //返回数据
                 return i;
             }

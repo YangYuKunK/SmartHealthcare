@@ -63,12 +63,12 @@ namespace SmartHealthcare.Infrastructure
                 hobby = user.UserHobby, //用户爱好
                 money = user.UserBalance, //用户余额
                 dress = user.UserAddress, //用户地址
-                createdate = user.CreationTime, //创建时间
-                updatetime = user.ModificationTime, //修改时间
-                deletetime = user.Deletetime, //删除时间
-                createname = user.CreationPerson, //创建人
-                updatename = user.ModificationPerson, //修改人
-                deletename = user.DeletePerson //删除人
+                createdate = DateTime.Now, //创建时间
+                updatetime = "", //修改时间
+                deletetime = "", //删除时间
+                createname = user.UserName, //创建人
+                updatename = "", //修改人
+                deletename = "" //删除人
             });
         }
 
@@ -108,7 +108,7 @@ namespace SmartHealthcare.Infrastructure
         /// </summary>
         /// <param name="user">用户数据模型</param>
         /// <returns></returns>
-        public int UpdateDeleteUser(Tb_sys_UserInfo user)
+        public int UpdateUser(Tb_sys_UserInfo user)
         {
             string str = "update tb_sys_userinfo set username = @name,useradmin = @admin,userpass = @pass,userage = @age,usersex = @sex,useridcard = @idcard,userphone = @phone,userdeletestate = @deletestate,usernumber = @number,useravatar = @avatar,userhobby = @hobby,userbalance = @balance,useraddress = @dress,creationtime = @addtime,modificationtime = @upttime,deletetime = @deltime,creationperson = @addren,modificationperson = @uptren,deleteperson = @delren where userid = @uid";
             return Dapper<int>.RUD(str, new
@@ -128,10 +128,10 @@ namespace SmartHealthcare.Infrastructure
                 balance = user.UserBalance, //用户余额
                 dress = user.UserAddress, //用户地址
                 addtime = user.CreationTime, //创建时间
-                upttime = DateTime.Now, //修改时间
+                upttime = user.ModificationTime, //修改时间
                 deltime = user.Deletetime, //删除时间
                 addren = user.CreationPerson, //创建人
-                uptren = user.UserName, //修改人
+                uptren = user.ModificationPerson, //修改人
                 delren = user.DeletePerson //删除人
             });
         }
