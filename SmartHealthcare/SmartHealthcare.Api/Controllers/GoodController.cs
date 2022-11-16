@@ -66,6 +66,37 @@ namespace SmartHealthcare.Api.Controllers
             });
         }
 
+        /// <summary>
+        /// 条件查询商品信息
+        /// </summary>
+        /// <param name="goodname">商品名称</param>
+        /// <param name="typeid">商品类别id</param>
+        /// <param name="delstate">删除状态</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpGet]
+        public IActionResult SelectGoodList(string? goodname, int? typeid, int delstate)
+        {
+            //捕获异常
+            try
+            {
+                //获取商品信息
+                List<Tb_sys_GoodsInfo> good = _good.SelectGoodList(goodname, typeid, delstate);
+                //返回数据
+                return Ok(new
+                {
+                    code = 200,
+                    msg = "成功",
+                    data = good
+                });
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("条件查询商品信息异常", ex);
+            }
+        }
+
         #region 文件流
 
         /// <summary>
@@ -144,16 +175,17 @@ namespace SmartHealthcare.Api.Controllers
         /// 变更商品删除状态
         /// </summary>
         /// <param name="goodid">商品id</param>
+        /// <param name="state">判断商品状态</param>
         /// <returns></returns>
         /// <exception cref="Exception">捕获异常</exception>
         [HttpPut]
-        public IActionResult UpdateDeleteStateGood(int goodid)
+        public IActionResult UpdateDeleteStateGood(int goodid, int state)
         {
             //捕获异常
             try
             {
                 //变更商品信息
-                int i = _good.UpdateDeleteGoodInfo(goodid);
+                int i = _good.UpdateDeleteGoodInfo(goodid, state);
                 if (i > 0)
                 {
                     //返回数据

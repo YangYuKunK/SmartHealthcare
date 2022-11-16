@@ -23,11 +23,11 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public List<Tb_sys_GoodsInfo> GetGoodsList(int goodid)
         {
-            string str = "select GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson where GoodsDeleteState = @deletestate";
+            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = @deletestate";
             //判断用户id是否为0
             if (goodid > 0)
             {
-                str += " and goodid = @id";
+                str += " and a.goodsid = @id";
                 return Dapper<Tb_sys_GoodsInfo>.Query(str, new
                 {
                     id = goodid, //商品id
@@ -50,11 +50,11 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public List<Tb_sys_GoodsInfo> GetDeleteGoodsList(int goodid)
         {
-            string str = "select GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson where GoodsDeleteState = @deletestate";
+            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = @deletestate";
             //判断用户id是否为0
             if (goodid > 0)
             {
-                str += " and goodid = @id";
+                str += " and a.goodsid = @id";
                 return Dapper<Tb_sys_GoodsInfo>.Query(str, new
                 {
                     id = goodid, //商品id
@@ -77,7 +77,7 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public int InsertGoodInfo(Tb_sys_GoodsInfo good)
         {
-            string str = "insert into tb_sys_goodsingo (GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,@name,@price,@isstate,@shelfstate,@delstate,@number,@img,@ductid,@iption,@fication,@serve,@tid,@addtime,@upttime,@deltime,@addren,@uptren,@delren)";
+            string str = "insert into tb_sys_goodsinfo (GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,@name,@price,@isstate,@shelfstate,@delstate,@number,@img,@ductid,@iption,@fication,@serve,@tid,@addtime,@upttime,@deltime,@addren,@uptren,@delren)";
             return Dapper<int>.RUD(str, new
             {
                 name = good.GoodsName, //商品名称
@@ -93,11 +93,11 @@ namespace SmartHealthcare.Infrastructure
                 serve = good.GoodsServe, //售后服务
                 tid = good.TypeId, //类别id
                 addtime = good.CreationTime, //创建时间
-                upttime = "", //修改时间
-                deltime = "", //删除时间
-                addren = good.GoodsName, //创建人
-                uptren = "", //修改人
-                delren = "" //删除人
+                upttime = good.ModificationTime, //修改时间
+                deltime = good.Deletetime, //删除时间
+                addren = good.CreationPerson, //创建人
+                uptren = good.ModificationPerson, //修改人
+                delren = good.DeletePerson //删除人
             });
         }
 
@@ -140,10 +140,31 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public int DeleteGoodInfo(int goodid)
         {
-            string str = "delete from tb_sys_goodsinfo where goodid = @id";
+            string str = "delete from tb_sys_goodsinfo where goodsid = @id";
             return Dapper<int>.RUD(str, new
             {
                 id = goodid //商品id
+            });
+        }
+        /// <summary>
+        /// 条件查询商品信息
+        /// </summary>
+        /// <param name="goodname">商品名称</param>
+        /// <param name="typeid">商品类别id</param>
+        /// <param name="delstate">删除状态</param>
+        /// <returns></returns>
+        public List<Tb_sys_GoodsInfo> SelectGoodList(string? goodname, int? typeid, int delstate)
+        {
+            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = @deletestate";
+            if (!string.IsNullOrEmpty(goodname) || typeid != 0 && !string.IsNullOrEmpty(Convert.ToString(typeid)))
+            {
+                str += " and a.goodsname = @name or a.typeid = @tid";
+            }
+            return Dapper<Tb_sys_GoodsInfo>.Query(str, new
+            {
+                deletestate = delstate, //删除状态
+                name = goodname, //商品名称
+                tid = typeid //商品类别id
             });
         }
     }

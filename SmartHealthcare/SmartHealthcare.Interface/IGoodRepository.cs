@@ -46,5 +46,14 @@ namespace SmartHealthcare.Interface
         /// <param name="goodid">商品id</param>
         /// <returns></returns>
         int DeleteGoodInfo(int goodid);
+
+        /// <summary>
+        /// 条件查询商品信息
+        /// </summary>
+        /// <param name="goodname">商品名称</param>
+        /// <param name="typeid">商品类别id</param>
+        /// <param name="delstate">删除状态</param>
+        /// <returns></returns>
+        List<Tb_sys_GoodsInfo> SelectGoodList(string? goodname,int? typeid,int delstate);
     }
 }

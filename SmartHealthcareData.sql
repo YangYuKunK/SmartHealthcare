@@ -170,10 +170,20 @@ create table Tb_sys_GoodsInfo
 	DeletePerson				varchar(20)											-- 删除人
 )
 
+select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId
+
+select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = 0
+
+select GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson from tb_sys_goodsinfo where GoodsDeleteState = 0
+
+select GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson from tb_sys_Goodsinfo
+
+insert into tb_sys_goodsingo (GoodsId,GoodsName,GoodsPrice,GoodsIsState,GoodsShelfState,GoodsDeleteState,GoodsNumber,GoodsImg,ProductID,GoodsDescription,GoodsSpecification,GoodsServe,TypeId,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,@name,@price,@isstate,@shelfstate,@delstate,@number,@img,@ductid,@iption,@fication,@serve,@tid,@addtime,@upttime,@deltime,@addren,@uptren,@delren)
+
 -- 新建商品类别表
 create table Tb_sys_GoodsType
 (
-	TypeId							int primary key auto_incremant,	-- 类别id
+	TypeId							int primary key auto_increment,	-- 类别id
 	TypeName						varchar(20),										-- 类别名称
 	GoodsTypeNumber			int,														-- 类别商品剩余数量
 	CreationTime				date,														-- 创建时间
@@ -182,8 +192,17 @@ create table Tb_sys_GoodsType
 	CreationPerson			varchar(20),										-- 创建人
 	ModificationPerson	varchar(20),										-- 修改人
 	DeletePerson				varchar(20)											-- 删除人
-)
+);
 
+select TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson from Tb_sys_GoodsType
+insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'呼吸',1494,NOW(),null,null,'杨宇坤','','');
+insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'锻炼',1234,NOW(),null,null,'杨宇坤','','');
+insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'心脏',1124,NOW(),null,null,'杨宇坤','','');
+insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'脉搏',1434,NOW(),null,null,'杨宇坤','','');
+insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'养生',1764,NOW(),null,null,'杨宇坤','','');
+insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'按摩',1764,NOW(),null,null,'杨宇坤','','');
+
+https://6bj3594361.zicp.fun/202211141858538858.jpg
 -- 新建药品表
 create table Tb_sys_Pharmaceuticals
 (
