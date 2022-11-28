@@ -19,7 +19,7 @@ namespace SmartHealthcare.Domain
         private int userAge; //用户年龄
         private int userSex; //用户性别
         private string? userIDCard; //用户身份证号
-        private string? userPhone; //用户手机号        
+        private string? userPhone; //用户手机号
         private int userDeleteState; //用户状态(逻辑删除)
         private string? userNumber; //用户编号
         private string? userAvatar; //用户头像

@@ -57,7 +57,7 @@ create table tb_sys_userinfo
 	userage							int,															-- 用户年龄
 	usersex							int,										 					-- 用户性别
 	useridcard					varchar(18),											-- 用户身份证号
-	userphone						varchar(11),											-- 用户手机号
+	userphone						varchar(11) UNIQUE,								-- 用户手机号
 	userdeletestate			int,															-- 用户状态(逻辑删除)
 	usernumber					varchar(50),											-- 用户编号
 	useravatar					varchar(100),											-- 用户头像
@@ -71,6 +71,9 @@ create table tb_sys_userinfo
 	modificationperson	varchar(20),											-- 修改人
 	deleteperson				varchar(20)												-- 删除人
 )
+
+
+select usersex from tb_sys_userinfo GROUP BY usersex
 
 select userid,username,useradmin,userpass,userage,usersex,useridcard,userphone,userdeletestate,usernumber,useravatar,userhobby,userbalance,useraddress,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userinfo where userphone = '' or username = ''
 
@@ -94,12 +97,16 @@ create table tb_sys_roleinfo
 	deleteperson				varchar(20)												-- 删除人
 )
 
+select * from tb_sys_roleinfo
+
 -- 新建用户角色表
 create table tb_sys_userrole
 (
 	userid							int,															-- 用户id
 	roleid							int 															-- 角色id
 )
+
+select * from tb_sys_userrole
 
 select userid,roleid,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson from tb_sys_userrole
 insert into tb_sys_userrole (userid,roleid,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson) values (1,1,now(),null,null,'杨宇坤','','')
@@ -126,7 +133,7 @@ create table tb_sys_DoctorInfo
 	Doctorname					varchar(10),											-- 医生姓名
 	hospitalid					int,															-- 所属医院
 	physicianid					int,											        -- 医生职称
-	userphone						varchar(11),											-- 手机号
+	userphone						varchar(11) UNIQUE,								-- 手机号
 	useridcardimg				varchar(100),											-- 身份证照片
 	certificateimg			varchar(100),											-- 医师资格证
 	professionalimg			varchar(100),											-- 医师执业证书
@@ -138,6 +145,12 @@ create table tb_sys_DoctorInfo
 	modificationperson	varchar(20),											-- 修改人
 	deleteperson				varchar(20)												-- 删除人
 )
+
+select * from tb_sys_DoctorInfo
+
+insert into tb_sys_DoctorInfo (Doctorid,Doctorname,hospitalid,physicianid,userphone,useridcardimg,certificateimg,professionalimg,hospitalcode,creationtime,modificationtime,deletetime,creationperson,modificationperson,deleteperson) values (null,'刘淑芝',1,1,'17182938492','','','','',now(),null,null,'1','1','1')
+
+select * from tb_sys_DoctorInfo where userphone = '17182938492'
 
 -- 新建医生职称表
 create table tb_sys_Physiciantitle
@@ -170,6 +183,23 @@ create table Tb_sys_GoodsInfo
 	DeletePerson				varchar(20)											-- 删除人
 )
 
+select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a left join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = @deletestate and a.GoodsShelfState = @shelstate
+
+select * from Tb_sys_GoodsType
+select * from Tb_sys_GoodsInfo where typeid = 12
+
+-- 变更商品分类所剩数量？
+update Tb_sys_GoodsType
+
+select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsShelfState = 0
+
+select * from Tb_sys_GoodsInfo
+select * from tb_sys_userinfo
+
+select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsId = 1
+
+select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.goodsname = '' or a.typeid = 6 and a.GoodsDeleteState = 0
+
 select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId
 
 select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = 0
@@ -185,7 +215,11 @@ create table Tb_sys_GoodsType
 (
 	TypeId							int primary key auto_increment,	-- 类别id
 	TypeName						varchar(20),										-- 类别名称
+	SaleNumber					int,														-- 在售数量
+	TakedownNumber			int,														-- 下架数量
+	GoodGcNumber				int,														-- 回收站数量
 	GoodsTypeNumber			int,														-- 类别商品剩余数量
+	TypeImg							varchar(100),										-- 商品分类图片
 	CreationTime				date,														-- 创建时间
 	ModificationTime		date,														-- 修改时间
 	Deletetime					date,														-- 删除时间
@@ -193,6 +227,14 @@ create table Tb_sys_GoodsType
 	ModificationPerson	varchar(20),										-- 修改人
 	DeletePerson				varchar(20)											-- 删除人
 );
+
+select * from Tb_sys_GoodsType
+b.SaleNumber
+-- 获取商品分类所剩数量
+select b.typeid,b.TypeImg,SaleNumber,b.TakedownNumber,b.GoodGcNumber,sum(a.GoodsNumber) GoodsTypeNumber,b.typename from Tb_sys_GoodsInfo a right join Tb_sys_GoodsType b on a.TypeId = b.TypeId group by b.typename order by b.typeid;
+select typeid,sum(GoodsNumber) SaleNumber from tb_sys_goodsinfo where GoodsShelfState = 1 GROUP BY typeid
+select typeid,sum(GoodsNumber) SaleNumber from tb_sys_goodsinfo where GoodsShelfState = 1 GROUP BY typeid
+
 
 select TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson from Tb_sys_GoodsType
 insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,'呼吸',1494,NOW(),null,null,'杨宇坤','','');

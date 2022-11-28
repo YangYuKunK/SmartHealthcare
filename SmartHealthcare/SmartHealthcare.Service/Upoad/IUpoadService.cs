@@ -12,6 +12,20 @@ namespace SmartHealthcare.Service.Upoad
     /// </summary>
     public interface IUpoadService
     {
+        /// <summary>
+        /// 上传本地方式
+        /// </summary>
+        /// <param name="file">图片路径</param>
+        /// <returns></returns>
         string UpLoad(IFormFile file);
+
+        /// <summary>
+        /// 上传云端
+        /// 七牛云
+        /// </summary>
+        /// <param name="file">图片路径</param>
+        /// <returns></returns>
+        string UpLoads(IFormFile file);
     }
+
 }

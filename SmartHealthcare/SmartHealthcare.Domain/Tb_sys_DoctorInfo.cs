@@ -28,6 +28,10 @@ namespace SmartHealthcare.Domain
         private string? modificationPerson; //修改人
         private string? deletePerson; //删除人
 
+        private int userSex; //性别
+        private int userAge; //年龄
+        
+
         #region 医生id
         /// <summary>
         /// 医生id
@@ -180,5 +184,25 @@ namespace SmartHealthcare.Domain
         }
         #endregion
 
+        #region 性别
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public int UserSex
+        {
+            get { return userSex; }
+            set { userSex = value; }
+        }
+        #endregion
+        #region 年龄
+        /// <summary>
+        /// 年龄
+        /// </summary>
+        public int UserAge
+        {
+            get { return userAge; }
+            set { userAge = value; }
+        }
+        #endregion
     }
 }

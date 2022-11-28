@@ -16,6 +16,35 @@ namespace SmartHealthcare.Infrastructure
     /// </summary>
     public class GoodRepository : IGoodRepository
     {
+        //实例化分页
+        QueryInfo queryinfo = new();
+
+        /// <summary>
+        /// 获取商品信息(未加入回收站)
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <returns></returns>
+        //public List<Tb_sys_GoodsInfo> GetGoodsList(int goodid)
+        //{
+        //    queryinfo.files = "a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName";
+        //    queryinfo.tableName = "Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId";
+        //    queryinfo.where = " a.GoodsDeleteState = 0";
+        //    queryinfo.orderby = "order by";
+        //    queryinfo.pageindex = 1;
+        //    queryinfo.pagesize = 5;
+        //    queryinfo.total = 12;
+        //    //判断用户id是否为0
+        //    if (goodid > 0)
+        //    {
+        //        queryinfo.where += $" and a.goodsid = '{goodid}'";
+        //    }
+        //    return Dapper<Tb_sys_GoodsInfo>.GetPageList<Tb_sys_GoodsInfo>(queryinfo.files,
+        //                                                queryinfo.tableName,
+        //                                                queryinfo.where,
+        //                                                queryinfo.orderby,
+        //                                                queryinfo.pageindex,
+        //                                                queryinfo.pagesize, total: queryinfo.total);
+        //}
         /// <summary>
         /// 获取商品信息(未加入回收站)
         /// </summary>
@@ -28,19 +57,12 @@ namespace SmartHealthcare.Infrastructure
             if (goodid > 0)
             {
                 str += " and a.goodsid = @id";
-                return Dapper<Tb_sys_GoodsInfo>.Query(str, new
-                {
-                    id = goodid, //商品id
-                    deletestate = 0 //删除状态
-                });
             }
-            else
+            return Dapper<Tb_sys_GoodsInfo>.Query(str, new
             {
-                return Dapper<Tb_sys_GoodsInfo>.Query(str, new
-                {
-                    deletestate = 0 //删除状态
-                });
-            }
+                id = goodid, //商品id
+                deletestate = 0 //删除状态
+            });
         }
 
         /// <summary>
@@ -55,19 +77,47 @@ namespace SmartHealthcare.Infrastructure
             if (goodid > 0)
             {
                 str += " and a.goodsid = @id";
-                return Dapper<Tb_sys_GoodsInfo>.Query(str, new
-                {
-                    id = goodid, //商品id
-                    deletestate = 1 //删除状态
-                });
             }
-            else
+            return Dapper<Tb_sys_GoodsInfo>.Query(str, new
             {
-                return Dapper<Tb_sys_GoodsInfo>.Query(str, new
-                {
-                    deletestate = 1 //删除状态
-                });
+                id = goodid, //商品id
+                deletestate = 1 //删除状态
+            });
+        }
+
+        /// <summary>
+        /// 查看上下架商品信息
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <param name="state">上下架状态</param>
+        /// <returns></returns>
+        public List<Tb_sys_GoodsInfo> GetShelGoodList(int goodid, int state)
+        {
+            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsShelfState = @shelstate";
+            //判断id是否未0
+            if (goodid > 0)
+            {
+                str += " and a.goodsid = @id";
             }
+            return Dapper<Tb_sys_GoodsInfo>.Query(str, new
+            {
+                id = goodid, //商品id
+                shelstate = state //上下架状态
+            });
+        }
+
+        /// <summary>
+        /// 获取该商品信息
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <returns></returns>
+        public List<Tb_sys_GoodsInfo> SelectGoodsList(int goodid)
+        {
+            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.goodsid = @id";
+            return Dapper<Tb_sys_GoodsInfo>.Query(str, new
+            {
+                id = goodid //商品id
+            });
         }
 
         /// <summary>
@@ -155,7 +205,7 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public List<Tb_sys_GoodsInfo> SelectGoodList(string? goodname, int? typeid, int delstate)
         {
-            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = @deletestate";
+            string str = "select a.GoodsId,a.GoodsName,a.GoodsPrice,a.GoodsIsState,a.GoodsShelfState,a.GoodsDeleteState,a.GoodsNumber,a.GoodsImg,a.ProductID,a.GoodsDescription,a.GoodsSpecification,a.GoodsServe,a.TypeId,a.CreationTime,a.ModificationTime,a.Deletetime,a.CreationPerson,a.ModificationPerson,a.DeletePerson,b.TypeName from Tb_sys_GoodsInfo a left join tb_sys_GoodsType b on a.TypeId = b.TypeId where a.GoodsDeleteState = @deletestate";
             if (!string.IsNullOrEmpty(goodname) || typeid != 0 && !string.IsNullOrEmpty(Convert.ToString(typeid)))
             {
                 str += " and a.goodsname = @name or a.typeid = @tid";
@@ -166,6 +216,21 @@ namespace SmartHealthcare.Infrastructure
                 name = goodname, //商品名称
                 tid = typeid //商品类别id
             });
+        }
+
+        /// <summary>
+        /// 查询分类中是否存在商品
+        /// </summary>
+        /// <param name="typeid">商品分类id</param>
+        /// <returns></returns>
+        public int SelectTypeIsId(int typeid)
+        {
+            string str = "select typeid from Tb_sys_GoodsInfo where typeid = @id";
+            List<Tb_sys_GoodsInfo> good = Dapper<Tb_sys_GoodsInfo>.Query(str, new
+            {
+                id = typeid //商品分类id
+            });
+            return good[0].TypeId;
         }
     }
 }

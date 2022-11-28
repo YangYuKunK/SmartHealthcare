@@ -27,6 +27,14 @@ namespace SmartHealthcare.Interface
         List<Tb_sys_GoodsInfo> GetDeleteGoodsList(int goodid);
 
         /// <summary>
+        /// 查看上下架商品信息
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <param name="state">上下架状态</param>
+        /// <returns></returns>
+        List<Tb_sys_GoodsInfo> GetShelGoodList(int goodid, int state);
+
+        /// <summary>
         /// 新增商品信息
         /// </summary>
         /// <param name="good">商品数据模型</param>
@@ -55,5 +63,19 @@ namespace SmartHealthcare.Interface
         /// <param name="delstate">删除状态</param>
         /// <returns></returns>
         List<Tb_sys_GoodsInfo> SelectGoodList(string? goodname,int? typeid,int delstate);
+
+        /// <summary>
+        /// 获取该商品信息
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <returns></returns>
+        List<Tb_sys_GoodsInfo> SelectGoodsList(int goodid);
+
+        /// <summary>
+        /// 查询分类中是否存在商品
+        /// </summary>
+        /// <param name="typeid">商品分类id</param>
+        /// <returns></returns>
+        int SelectTypeIsId(int typeid);
     }
 }

@@ -15,12 +15,12 @@ namespace SmartHealthcare.Infrastructure
     public class GoodTypeRepository : IGoodTypeRepository
     {
         /// <summary>
-        /// 获取商品分类信息
+        /// 获取商品分类信息(数量等信息)
         /// </summary>
         /// <returns></returns>
         public List<Tb_sys_GoodsType> GetGoodTypeList()
         {
-            string str = "select TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson from Tb_sys_GoodsType";
+            string str = "select b.typeid,b.TypeImg,sum(a.GoodsNumber) GoodsTypeNumber,b.typename from Tb_sys_GoodsInfo a right join Tb_sys_GoodsType b on a.TypeId = b.TypeId group by typename order by typeid";
             return Dapper<Tb_sys_GoodsType>.Query(str);
         }
 
@@ -31,11 +31,12 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public int InsertGoodTypeInfo(Tb_sys_GoodsType type)
         {
-            string str = "insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,@name,@number,@addtime,@upttime,@deltime,@addren,@uptren,@delren)";
+            string str = "insert into Tb_sys_GoodsType (TypeId,TypeName,GoodsTypeNumber,TypeImg,CreationTime,ModificationTime,Deletetime,CreationPerson,ModificationPerson,DeletePerson) values (null,@name,@number,@img,@addtime,@upttime,@deltime,@addren,@uptren,@delren)";
             return Dapper<int>.RUD(str, new
             {
                 name = type.TypeName, //商品分类名称
                 number = type.GoodsTypeNumber, //分类商品剩余数量
+                img = type.TypeImg, //分类图片
                 addtime = type.CreationTime, //创建时间
                 upttime = type.ModificationTime, //修改时间
                 deltime = type.Deletetime, //删除时间
@@ -66,12 +67,13 @@ namespace SmartHealthcare.Infrastructure
         /// <returns></returns>
         public int UpdateGoodTypeInfo(Tb_sys_GoodsType type)
         {
-            string str = "update Tb_sys_GoodsType set TypeName = @name,GoodsTypeNumber = @number,CreationTime = @addtime,ModificationTime = @upttime,Deletetime = @deltime,CreationPerson = @addren,ModificationPerson = @uptren,DeletePerson = @delren where TypeId = @tid";
+            string str = "update Tb_sys_GoodsType set TypeName = @name,GoodsTypeNumber = @number,TypeImg = @img,CreationTime = @addtime,ModificationTime = @upttime,Deletetime = @deltime,CreationPerson = @addren,ModificationPerson = @uptren,DeletePerson = @delren where TypeId = @tid";
             return Dapper<int>.RUD(str,new
             {
                 tid = type.TypeId, //商品id
                 name = type.TypeName, //商品分类名称
                 number = type.GoodsTypeNumber, //分类商品剩余数量
+                img = type.TypeImg, //分类图片
                 addtime = type.CreationTime, //创建时间
                 upttime = type.ModificationTime, //修改时间
                 deltime = type.Deletetime, //删除时间

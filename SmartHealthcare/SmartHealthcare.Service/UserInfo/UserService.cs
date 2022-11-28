@@ -152,6 +152,12 @@ namespace SmartHealthcare.Service.UserInfo
                     //逻辑删除
                     //获取该条用户信息
                     List<Tb_sys_UserInfo> userlist = _user.GetDeleteUserList(userid);
+                    if (userlist.Count() == 0)
+                    {
+                        //获取该条用户信息
+                        userlist = _user.GetUserLists(userid);
+                    }
+                    //赋值
                     Tb_sys_UserInfo user = userlist[0];
                     //给予删除审计信息
                     user.Deletetime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));

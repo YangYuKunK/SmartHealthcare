@@ -7,8 +7,11 @@ using SmartHealthcare.Api;
 using log4net.Config;
 using log4net;
 using static SmartHealthcare.Api.log4net.Log4net;
+using FluentAssertions.Common;
+using MrHuo.OAuth;
+using MrHuo.OAuth.Wechat;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);//建造者模式
 
 // Add services to the container.
 
@@ -23,7 +26,6 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));//automapper依赖
 
 #endregion
 
-
 #region AutoFac依赖注入配置
 
 //Autofac自动注入
@@ -31,7 +33,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).Conf
 {
     builder.RegisterModule(new AutofacModuleRegister());
 });
-
 
 #endregion
 
@@ -42,14 +43,21 @@ XmlConfigurator.Configure(Log4netHelper.Repository, new FileInfo(Environment.Cur
 
 #endregion
 
+#region Oauth2.0
+
+builder.Services.AddControllersWithViews();
+//builder.Services.AddSingleton(new WechatOAuth(OAuthConfig.LoadFrom(null, "oauth:wechat")));
+
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseAuthentication(); //登录验证机制
 

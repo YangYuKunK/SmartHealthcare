@@ -67,6 +67,26 @@ namespace SmartHealthcare.Api.Controllers
         }
 
         /// <summary>
+        /// 获取上下架商品信息
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <param name="state">上下架状态</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetShelGoodList(int goodid, int state)
+        {
+            //获取商品信息
+            List<Tb_sys_GoodsInfo> good = _good.GetShelGoodList(goodid, state);
+            //返回数据
+            return Ok(new
+            {
+                code = 200,
+                msg = "成功",
+                data = good
+            });
+        }
+
+        /// <summary>
         /// 条件查询商品信息
         /// </summary>
         /// <param name="goodname">商品名称</param>
@@ -99,8 +119,10 @@ namespace SmartHealthcare.Api.Controllers
 
         #region 文件流
 
+       
         /// <summary>
         /// 文件上传
+        /// 七牛云
         /// </summary>
         /// <param name="file">图片路径</param>
         /// <returns></returns>
@@ -113,11 +135,11 @@ namespace SmartHealthcare.Api.Controllers
                 //定义文件名
                 string? fname = null;
                 //获取文件名并赋值
-                fname = _upoad.UpLoad(file);
+                fname = _upoad.UpLoads(file);
                 //返回数据
                 return Ok(new
                 {
-                    newFileName = "https://6bj3594361.zicp.fun/" + fname
+                    newFileName = "http://rlh19p0mg.hn-bkt.clouddn.com/" + fname
                 });
             }
             catch (Exception)
@@ -126,7 +148,6 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("文件上传异常");
             }
         }
-
         #endregion
 
         /// <summary>
@@ -171,6 +192,8 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
 
+        #region 变更商品状态
+
         /// <summary>
         /// 变更商品删除状态
         /// </summary>
@@ -213,6 +236,51 @@ namespace SmartHealthcare.Api.Controllers
                 throw new Exception("变更商品删除状态异常", ex);
             }
         }
+
+        /// <summary>
+        /// 变更商品上下架状态
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <param name="state">判断商品状态</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpPut]
+        public IActionResult UpdateShelStateGoodInfo(int goodid, int state)
+        {
+            //捕获异常
+            try
+            {
+                //变更商品信息
+                int i = _good.UpdateShelStateGoodInfo(goodid, state);
+                if (i > 0)
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 200,
+                        msg = "变更商品上下架状态成功",
+                        data = i
+                    });
+                }
+                else
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 400,
+                        msg = "变更商品上下架状态失败",
+                        data = i
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("变更商品上下架状态异常", ex);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// 编辑商品信息

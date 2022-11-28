@@ -64,8 +64,8 @@ namespace SmartHealthcare.Infrastructure
                 money = user.UserBalance, //用户余额
                 dress = user.UserAddress, //用户地址
                 createdate = DateTime.Now, //创建时间
-                updatetime = "", //修改时间
-                deletetime = "", //删除时间
+                updatetime = user.ModificationTime, //修改时间
+                deletetime = user.Deletetime, //删除时间
                 createname = user.UserName, //创建人
                 updatename = "", //修改人
                 deletename = "" //删除人

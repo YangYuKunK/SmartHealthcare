@@ -14,6 +14,7 @@ namespace SmartHealthcare.Domain
         private int typeId; //类别id
         private string? typeName; //类别名称
         private int goodsTypeNumber; //类别商品剩余数量
+        private string? typeImg; //商品分类图片
 
         private DateTime creationTime; //创建日期
         private DateTime modificationTime; //修改日期
@@ -50,6 +51,16 @@ namespace SmartHealthcare.Domain
         {
             get { return goodsTypeNumber; }
             set { goodsTypeNumber = value; }
+        }
+        #endregion
+        #region 商品分类图片
+        /// <summary>
+        /// 商品分类图片
+        /// </summary>
+        public string? TypeImg
+        {
+            get { return typeImg; }
+            set { typeImg = value; }
         }
         #endregion
 

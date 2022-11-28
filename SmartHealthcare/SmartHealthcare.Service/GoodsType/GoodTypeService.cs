@@ -19,15 +19,18 @@ namespace SmartHealthcare.Service.GoodsType
         /// 依赖注入
         /// </summary>
         IGoodTypeRepository _type;
+        IGoodRepository _good;
         IMapper _mapper;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="type">商品分类仓储接口</param>
+        /// <param name="good">商品仓储接口</param>
         /// <param name="mapper">automapper</param>
-        public GoodTypeService(IGoodTypeRepository type, IMapper mapper)
+        public GoodTypeService(IGoodTypeRepository type, IMapper mapper, IGoodRepository good)
         {
             _type = type;
+            _good = good;
             _mapper = mapper;
         }
 
@@ -69,6 +72,8 @@ namespace SmartHealthcare.Service.GoodsType
                 //审计字段赋值
                 types.CreationTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 type.CreationPerson = "杨宇坤";
+                //商品分类数量为0
+                type.GoodsTypeNumber = 0;
                 //新增商品分类信息
                 int i = _type.InsertGoodTypeInfo(types);
                 //返回数据
@@ -77,7 +82,7 @@ namespace SmartHealthcare.Service.GoodsType
             catch (Exception ex)
             {
                 //抛出异常
-                throw;
+                throw new Exception("新增商品分类异常", ex);
             }
         }
 
@@ -92,18 +97,29 @@ namespace SmartHealthcare.Service.GoodsType
             //捕获异常
             try
             {
-                //判断分类id是否未0
-                if (typeid != 0)
+                //判断分类中是否存在商品
+                //根据分类id查询
+                int i = _good.SelectTypeIsId(typeid);
+                if (i != typeid)
                 {
-                    //删除该商品分类
-                    int i = _type.DeleteGoodTypeInfo(typeid);
-                    //返回数据
-                    return i;
+                    //判断分类id是否未0
+                    if (typeid != 0)
+                    {
+                        //删除该商品分类
+                        int a = _type.DeleteGoodTypeInfo(typeid);
+                        //返回数据
+                        return a;
+                    }
+                    else
+                    {
+                        //返回数据
+                        return 0;
+                    }
                 }
                 else
                 {
                     //返回数据
-                    return 0;
+                    return -1;
                 }
             }
             catch (Exception ex)
@@ -140,7 +156,5 @@ namespace SmartHealthcare.Service.GoodsType
                 throw new Exception("编辑商品分类异常", ex);
             }
         }
-
-        
     }
 }

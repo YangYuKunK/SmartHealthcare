@@ -1,10 +1,22 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MrHuo.OAuth.Wechat;
+using Org.BouncyCastle.Ocsp;
 using SmartHealthcare.Api.log4net;
 using SmartHealthcare.Domain;
+using SmartHealthcare.Service.Doctor;
 using SmartHealthcare.Service.Upoad;
 using SmartHealthcare.Service.UserInfo;
 using SmartHealthcare.Service.ViewModel;
+
+using System;
+using System.Threading.Tasks;
+using TencentCloud.Common;
+using TencentCloud.Common.Profile;
+using TencentCloud.Sms.V20210111;
+using TencentCloud.Sms.V20210111.Models;
+using TencentCloud.Tcss.V20201101.Models;
 
 namespace SmartHealthcare.Api.Controllers
 {
@@ -20,15 +32,18 @@ namespace SmartHealthcare.Api.Controllers
         /// </summary>
         IUserService _user;
         IUpoadService _upoad;
+        IDoctorService _doctor;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="user">用户服务接口</param>
         /// <param name="upoad">文件上传服务接口</param>
-        public UserController(IUserService user, IUpoadService upoad)
+        /// <param name="doctor">医生服务接口</param>
+        public UserController(IUserService user, IUpoadService upoad, IDoctorService doctor)
         {
             _user = user;
             _upoad = upoad;
+            _doctor = doctor;
         }
 
         #region 获取用户信息
@@ -39,6 +54,7 @@ namespace SmartHealthcare.Api.Controllers
         /// <param name="userid">用户id</param>
         /// <returns></returns>
         /// <exception cref="Exception">捕获异常</exception>
+        //[Authorize]
         [HttpGet]
         public IActionResult GetUserLists(int userid = 0)
         {
@@ -193,6 +209,50 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// 医生注册
+        /// </summary>
+        /// <param name="doctor">医生视图模型</param>
+        /// <param name="capt">验证码</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpPost]
+        public IActionResult CreateDoctorInfo(Tb_sys_DoctorInfoViewModel doctor)
+        {
+            //捕获异常
+            try
+            {
+                //医生注册
+                int i = _doctor.CreateDoctorInfo(doctor);
+                //判断医生是否注册成功
+                if (i > 0)
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 200,
+                        msg = "医生注册成功",
+                        data = i
+                    });
+                }
+                else
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 400,
+                        msg = "医生注册失败",
+                        data = i
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("医生注册异常", ex);
+            }
+        }
 
         #endregion
 
@@ -209,20 +269,13 @@ namespace SmartHealthcare.Api.Controllers
             //捕获异常
             try
             {
-                //定义文件名
-                string fname = "";
                 //获取文件名并赋值
-                fname = _upoad.UpLoad(file);
-                ////分析绝对路径
-                //string rootdir = AppContext.BaseDirectory.Split(@"\bin\")[0];
-                //string fname = DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetExtension(file.FileName);
-                //var path = rootdir + @"/img/" + fname;
-                //using (FileStream fs = System.IO.File.Create(path))
-                //{
-                //    file.CopyTo(fs);
-                //    fs.Flush();//清空文件流
-                //}
-                return Ok(new { newFileName = "https://6bj3594361.zicp.fun/" + fname });
+                string? fname = _upoad.UpLoads(file);
+                //返回数据
+                return Ok(new
+                {
+                    newFileName = "http://rlh19p0mg.hn-bkt.clouddn.com/" + fname
+                });
             }
             catch (Exception)
             {
@@ -324,7 +377,7 @@ namespace SmartHealthcare.Api.Controllers
         #region 登录
 
         /// <summary>
-        /// 用户登录
+        /// 患者登录
         /// </summary>
         /// <param name="admin">账号</param>
         /// <param name="pass">密码</param>
@@ -384,7 +437,219 @@ namespace SmartHealthcare.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// 医生登录
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="capt"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public IActionResult SelectDoctorLogin(string phone, string capt)
+        {
+            //捕获异常
+            try
+            {
+                //登录
+                int i = _doctor.SelectDoctorLogin(phone);
+                //判断验证码是否正确
+                if (i > 0)
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        code = 200,
+                        msg = "医生登录成功",
+                        data = i
+                    });
+                }
+                else
+                {
+                    //返回数据
+                    return Ok(new
+                    {
+                        msg = "医生登录失败",
+                        code = 400,
+                        data = i
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("抛出异常", ex);
+            }
+        }
+
+        ///// <summary>
+        ///// 第三方登录 QQ、微信
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public IActionResult ThirdPartyLogin()
+        //{
+        //    var claims = HttpContext.User.Claims.ToList();
+        //    return Ok(new
+        //    {
+        //        claims
+        //    });
+        //}
+
+        [HttpGet]
+        public IActionResult Index(string type,[FromServices] WechatOAuth wechatOAuth)
+        {
+            var redirectUrl = "";
+            switch (type.ToLower())
+            {
+                case "wechat":
+                    {
+                        redirectUrl = wechatOAuth.GetAuthorizeUrl();
+                        break;
+                    }
+                default:
+                    return Ok($"没有实现【{type}】登录方式！");
+            }
+            return Redirect(redirectUrl);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoginCallback(string type,[FromServices] WechatOAuth wechatOAuth,[FromQuery] string code,[FromQuery] string state)
+        {
+            try
+            {
+                switch (type.ToLower())
+                {
+                    case "wechat":
+                        {
+                            var authorizeResult = await wechatOAuth.AuthorizeCallback(code, state);
+                            if (!authorizeResult.IsSccess)
+                            {
+                                throw new Exception(authorizeResult.ErrorMessage);
+                            }
+                            return Ok(authorizeResult);
+                        }
+                    default:
+                        throw new Exception($"没有实现【{type}】登录回调！");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+
         #endregion
+
+        #region 验证用户输入验证码是否正确
+        /// <summary>
+        /// 验证码是否正确
+        /// </summary>
+        /// <param name="capt"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public int VerifyCaptcha(string capt)
+        {
+            int i = 0;
+            //验证通过赋值为1
+
+            //失败正常返回
+            return 1;
+        }
+        #endregion
+
+        #region 短信验证
+        /// <summary>
+        /// 注册短信
+        /// </summary>
+        /// <param name="phone">手机号</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        [HttpPost]
+        public IActionResult SMS(string? phone, int state)
+        {
+            //捕获异常
+            try
+            {
+                // 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey,此处还需注意密钥对的保密
+                Credential cred = new Credential
+                {
+                    SecretId = "AKIDTjkV4NPAeqlLjriKgkX3JHyPZS4PTHo4",
+                    SecretKey = "1lNtIboqc7LIzQcXBYfU2JJ2UfaEbgU1"
+                };
+                // 实例化一个client选项，可选的，没有特殊需求可以跳过
+                ClientProfile clientProfile = new ClientProfile();
+                // 实例化一个http选项，可选的，没有特殊需求可以跳过
+                HttpProfile httpProfile = new HttpProfile();
+                httpProfile.Endpoint = ("sms.tencentcloudapi.com");
+                clientProfile.HttpProfile = httpProfile;
+
+                // 实例化要请求产品的client对象,clientProfile是可选的
+                SmsClient client = new SmsClient(cred, "ap-guangzhou", clientProfile);
+
+                //生成验证码
+                string capt = Captcha();
+                // 实例化一个请求对象,每个接口都会对应一个request对象
+                SendSmsRequest req = new();
+                //判断验证码是否为空
+                if (!string.IsNullOrEmpty(capt))
+                {
+                    req.PhoneNumberSet = new string[] { "+86" + phone }; //手机
+                    req.SmsSdkAppId = "1400614525"; //短信控制台 在添加应用后 smsSdk默认的
+                    if (state == 1)
+                    {
+                        req.TemplateId = "1252439"; //注册短信模板id
+                        req.TemplateParamSet = new string[] { capt, "2" };
+                    }
+                    else if (state == 2)
+                    {
+                        req.TemplateId = "1252443"; //登录短信模板id
+                        req.TemplateParamSet = new string[] { capt };
+                    }
+                    req.SignName = "竹帆";
+                    // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
+                    SendSmsResponse resp = client.SendSmsSync(req);
+                    return Ok(new
+                    {
+                        resp
+                    });
+                }
+                else
+                {
+                    // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
+                    SendSmsResponse resp = client.SendSmsSync(req);
+                    return Ok(new
+                    {
+                        resp
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("短信异常", ex);
+            }
+        }
+        #endregion
+
+        #region 生成验证码
+        /// <summary>
+        /// 生成随机六位数
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public string Captcha()
+        {
+            Random rd = new Random();
+            //随机生成六位数
+            string capt = rd.Next(100000, 999999).ToString();
+            //将生成后的验证码存入rides中并设置失效时间
+
+            //将验证码返回至短信接口
+            return capt;
+        }
+        #endregion
+
+        #region 编辑
 
         /// <summary>
         /// 编辑用户信息
@@ -424,9 +689,10 @@ namespace SmartHealthcare.Api.Controllers
             catch (Exception ex)
             {
                 //抛出异常
-                throw new Exception("编辑用户信息异常",ex);
+                throw new Exception("编辑用户信息异常", ex);
             }
         }
 
+        #endregion
     }
 }

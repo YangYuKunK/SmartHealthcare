@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AutoMapper.Configuration.Annotations;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +14,11 @@ namespace SmartHealthcare.Service.ViewModel
     public class Tb_sys_GoodsTypeViewModel
     {
         public int TypeId { get; set; } //类别id
+        [NotNull]
         public string? TypeName { get; set; } //类别名称
         public int GoodsTypeNumber { get; set; } //类别商品剩余数量
+        [NotNull]
+        public string? TypeImg { get; set; } //分类图片
 
         public DateTime CreationTime { get; set; } //创建时间
         public DateTime ModificationTime { get; set; } //修改时间

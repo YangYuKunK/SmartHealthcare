@@ -79,6 +79,30 @@ namespace SmartHealthcare.Service.Goods
         }
 
         /// <summary>
+        /// 查看上下架商品信息
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <param name="state">上下架状态</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public List<Tb_sys_GoodsInfo> GetShelGoodList(int goodid, int state)
+        {
+            //捕获异常
+            try
+            {
+                //获取商品信息
+                List<Tb_sys_GoodsInfo> good = _good.GetShelGoodList(goodid, state);
+                //返回数据
+                return good;
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("获取上下架商品信息异常", ex);
+            }
+        }
+
+        /// <summary>
         /// 新增商品信息
         /// </summary>
         /// <param name="good">商品数据模型</param>
@@ -116,7 +140,7 @@ namespace SmartHealthcare.Service.Goods
         }
 
         /// <summary>
-        /// 变更商品状态
+        /// 变更商品删除状态
         /// </summary>
         /// <param name="goodid">商品id</param>
         /// <param name="state">判断商品状态</param>
@@ -127,14 +151,15 @@ namespace SmartHealthcare.Service.Goods
             //捕获异常
             try
             {
-                //判断商品状态是否未0或1
-                if (state == 1 || state == 0)
+                //实例化商品数据模型
+                List<Tb_sys_GoodsInfo> good = new();
+
+                //判断商品id是否为0
+                if (goodid != 0)
                 {
-                    //判断商品id是否为0
-                    if (goodid != 0)
+                    //判断商品删除状态是否未0或1
+                    if (state == 1 || state == 0)
                     {
-                        //实例化商品数据模型
-                        List<Tb_sys_GoodsInfo> good = new();
                         //判断商品删除状态
                         if (state == 0)
                         {
@@ -154,6 +179,64 @@ namespace SmartHealthcare.Service.Goods
                         else if (good[0].GoodsDeleteState == 1)
                         {
                             good[0].GoodsDeleteState = 0;
+                        }
+
+                        //变更商品状态
+                        int i = _good.UpdateGoodInfo(good[0]);
+                        //返回数据
+                        return i;
+                    }
+                    else
+                    {
+                        //返回数据
+                        return 0;
+                    }
+                }
+                else
+                {
+                    //返回数据
+                    return 0;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //抛出异常
+                throw new Exception("变更商品状态异常", ex);
+            }
+        }
+
+        /// <summary>
+        /// 变更商品上下架状态
+        /// </summary>
+        /// <param name="goodid">商品id</param>
+        /// <param name="state">判断商品状态</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">捕获异常</exception>
+        public int UpdateShelStateGoodInfo(int goodid, int state)
+        {
+            //捕获异常
+            try
+            {
+                //实例化商品数据模型
+                List<Tb_sys_GoodsInfo> good = new();
+
+                //判断商品id是否为0
+                if (goodid != 0)
+                {
+                    //判断商品是否已加入购物车
+                    if (state == 3)
+                    {
+                        //获取商品信息
+                        good = _good.SelectGoodsList(goodid);
+                        //变更商品上下架状态
+                        if (good[0].GoodsShelfState == 0)
+                        {
+                            good[0].GoodsShelfState = 1;
+                        }
+                        else if (good[0].GoodsShelfState == 1)
+                        {
+                            good[0].GoodsShelfState = 0;
                         }
 
                         //变更商品状态
