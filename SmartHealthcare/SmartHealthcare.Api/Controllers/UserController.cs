@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MrHuo.OAuth.Wechat;
+using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Ocsp;
 using SmartHealthcare.Api.log4net;
 using SmartHealthcare.Domain;
@@ -11,12 +14,16 @@ using SmartHealthcare.Service.UserInfo;
 using SmartHealthcare.Service.ViewModel;
 
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using TencentCloud.Bm.V20180423.Models;
 using TencentCloud.Common;
 using TencentCloud.Common.Profile;
 using TencentCloud.Sms.V20210111;
 using TencentCloud.Sms.V20210111.Models;
 using TencentCloud.Tcss.V20201101.Models;
+using System.Net;
+using SmartHealthcare.Api.JWT;
 
 namespace SmartHealthcare.Api.Controllers
 {
@@ -33,17 +40,20 @@ namespace SmartHealthcare.Api.Controllers
         IUserService _user;
         IUpoadService _upoad;
         IDoctorService _doctor;
+        readonly IJwtuser _jwt;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="user">用户服务接口</param>
         /// <param name="upoad">文件上传服务接口</param>
         /// <param name="doctor">医生服务接口</param>
-        public UserController(IUserService user, IUpoadService upoad, IDoctorService doctor)
+        /// <param name="jwt">jwt接口</param>
+        public UserController(IUserService user, IUpoadService upoad, IDoctorService doctor,IJwtuser jwt)
         {
             _user = user;
             _upoad = upoad;
             _doctor = doctor;
+            _jwt = jwt;
         }
 
         #region 获取用户信息
@@ -63,6 +73,8 @@ namespace SmartHealthcare.Api.Controllers
             {
                 //从服务曾中用户信息
                 List<Tb_sys_UserInfo> user = _user.GetUserLists(userid);
+                //记录日志
+                Log4net.Log4netHelper.Error("获取用户信息成功");
                 return Ok(new
                 {
                     code = 200,
@@ -72,6 +84,8 @@ namespace SmartHealthcare.Api.Controllers
             }
             catch (Exception ex)
             {
+                //记录日志
+                Log4net.Log4netHelper.Error("获取用户信息异常");
                 //抛出异常
                 throw new Exception("获取用户信息异常", ex);
             }
@@ -395,19 +409,35 @@ namespace SmartHealthcare.Api.Controllers
                     Tb_sys_UserInfo user = _user.SelectUserInfo(admin, pass);
                     if (user.UserId != 0)
                     {
-                        //记录日志
-                        Log4net.Log4netHelper.Error("登陆成功");
-                        //返回数据
-                        return Ok(new
+                        //捕获异常
+                        try
                         {
-                            code = 200,
-                            token = "",
-                            msg = "登录成功",
-                            data = user
-                        });
+                            string jwttoken = _jwt.JwtJia(user);
+                            //记录日志
+                            Log4net.Log4netHelper.Error("获取token成功");
+                            //记录日志
+                            Log4net.Log4netHelper.Error("用户登陆成功");
+                            //返回数据
+                            return Ok(new
+                            {
+                                code = 200,
+                                token = "",
+                                msg = "登录成功",
+                                data = user
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            //记录日志
+                            Log4net.Log4netHelper.Error("获取token异常");
+                            //抛出异常
+                            throw new Exception("获取token异常",ex);
+                        }
                     }
                     else
                     {
+                        //记录日志
+                        Log4net.Log4netHelper.Error("用户登录失败");
                         //返回数据
                         return Ok(new
                         {
@@ -550,8 +580,17 @@ namespace SmartHealthcare.Api.Controllers
         public int VerifyCaptcha(string capt)
         {
             int i = 0;
-            //验证通过赋值为1
-
+            ////验证通过赋值为1
+            //var a = CookieAuthenticationDefaults.AccessDeniedPath;
+            
+            //if (a == capt)
+            //{
+            //    i = 1;
+            //}
+            //else
+            //{
+            //    i = 0;
+            //}
             //失败正常返回
             return 1;
         }
@@ -642,8 +681,7 @@ namespace SmartHealthcare.Api.Controllers
             Random rd = new Random();
             //随机生成六位数
             string capt = rd.Next(100000, 999999).ToString();
-            //将生成后的验证码存入rides中并设置失效时间
-
+            
             //将验证码返回至短信接口
             return capt;
         }

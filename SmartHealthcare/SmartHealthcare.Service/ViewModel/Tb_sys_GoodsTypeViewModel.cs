@@ -15,7 +15,7 @@ namespace SmartHealthcare.Service.ViewModel
     {
         public int TypeId { get; set; } //类别id
         [NotNull]
-        public string? TypeName { get; set; } //类别名称
+        public string? TypeName { get ; set; } //类别名称
         public int GoodsTypeNumber { get; set; } //类别商品剩余数量
         [NotNull]
         public string? TypeImg { get; set; } //分类图片

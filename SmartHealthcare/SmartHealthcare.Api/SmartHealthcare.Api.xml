@@ -1,0 +1,476 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SmartHealthcare.Api</name>
+    </assembly>
+    <members>
+        <member name="T:SmartHealthcare.Api.Controllers.GoodController">
+            <summary>
+            商品控制器
+            </summary>
+        </member>
+        <member name="F:SmartHealthcare.Api.Controllers.GoodController._good">
+            <summary>
+            依赖注入
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.#ctor(SmartHealthcare.Service.Goods.IGoodService,SmartHealthcare.Service.Upoad.IUpoadService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="good">商品服务接口</param>
+            <param name="upoad">文件上传服务接口</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.GetGoodList">
+            <summary>
+            获取商品信息(未加入回收站)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.GetDeleteGoodList">
+            <summary>
+            获取商品信息(已加入回收站)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.GetShelGoodList(System.Int32,System.Int32)">
+            <summary>
+            获取上下架商品信息
+            </summary>
+            <param name="goodid">商品id</param>
+            <param name="state">上下架状态</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.SelectGoodList(System.String,System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            条件查询商品信息
+            </summary>
+            <param name="goodname">商品名称</param>
+            <param name="typeid">商品类别id</param>
+            <param name="delstate">删除状态</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.UpLoad(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            文件上传
+            七牛云
+            </summary>
+            <param name="file">图片路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.InsertGoodInfo(SmartHealthcare.Service.ViewModel.Tb_sys_GoodsInfoViewModel)">
+            <summary>
+            新增商品信息
+            </summary>
+            <param name="good">商品视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.UpdateDeleteStateGood(System.Int32,System.Int32)">
+            <summary>
+            变更商品删除状态
+            </summary>
+            <param name="goodid">商品id</param>
+            <param name="state">判断商品状态</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.UpdateShelStateGoodInfo(System.Int32,System.Int32)">
+            <summary>
+            变更商品上下架状态
+            </summary>
+            <param name="goodid">商品id</param>
+            <param name="state">判断商品状态</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.UpdateGoodInfo(SmartHealthcare.Service.ViewModel.Tb_sys_GoodsInfoViewModel)">
+            <summary>
+            编辑商品信息
+            </summary>
+            <param name="good">商品视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodController.DeleteGoodInfo(System.Int32)">
+            <summary>
+            删除该商品信息
+            </summary>
+            <param name="goodid">商品id</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="T:SmartHealthcare.Api.Controllers.GoodTypeController">
+            <summary>
+            商品分类控制器
+            </summary>
+        </member>
+        <member name="F:SmartHealthcare.Api.Controllers.GoodTypeController._type">
+            <summary>
+            依赖注入
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodTypeController.#ctor(SmartHealthcare.Service.GoodsType.IGoodTypeService,SmartHealthcare.Service.Upoad.IUpoadService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="type">商品分类服务接口</param>
+            <param name="upoad">上传文件服务接口</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodTypeController.GetGoodTypeList">
+            <summary>
+            获取商品分类信息
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodTypeController.InsertGoodTypeInfo(SmartHealthcare.Service.ViewModel.Tb_sys_GoodsTypeViewModel)">
+            <summary>
+            新增商品分类信息
+            </summary>
+            <param name="type">商品分类视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodTypeController.DeleteGoodType(System.Int32)">
+            <summary>
+            删除商品分类信息
+            </summary>
+            <param name="typeid">分类id</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.GoodTypeController.UpdateGoodTypeInfo(SmartHealthcare.Service.ViewModel.Tb_sys_GoodsTypeViewModel)">
+            <summary>
+            编辑商品分类
+            </summary>
+            <param name="type">商品分类视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="F:SmartHealthcare.Api.Controllers.RoleController._role">
+            <summary>
+            依赖注入
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.RoleController.#ctor(SmartHealthcare.Service.RoleInfo.IRoleService)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="role">角色服务接口</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.RoleController.GetRoleList">
+            <summary>
+            获取除管理员外所有角色信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.RoleController.InsertRoleInfo(SmartHealthcare.Service.ViewModel.Tb_sys_RoleInfoViewModel)">
+            <summary>
+            新增角色信息
+            </summary>
+            <param name="role">角色视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.RoleController.UpdateRoleInfo(SmartHealthcare.Service.ViewModel.Tb_sys_RoleInfoViewModel)">
+            <summary>
+            编辑角色信息
+            </summary>
+            <param name="role">角色视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.RoleController.DeleteRoleInfo(System.Int32)">
+            <summary>
+            删除角色信息
+            </summary>
+            <param name="roleid">角色id</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="T:SmartHealthcare.Api.Controllers.UserController">
+            <summary>
+            用户控制器
+            </summary>
+        </member>
+        <member name="F:SmartHealthcare.Api.Controllers.UserController._user">
+            <summary>
+            依赖注入
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.#ctor(SmartHealthcare.Service.UserInfo.IUserService,SmartHealthcare.Service.Upoad.IUpoadService,SmartHealthcare.Service.Doctor.IDoctorService,SmartHealthcare.Api.JWT.IJwtuser)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="user">用户服务接口</param>
+            <param name="upoad">文件上传服务接口</param>
+            <param name="doctor">医生服务接口</param>
+            <param name="jwt">jwt接口</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.GetUserLists(System.Int32)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="userid">用户id</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.GetUserListPhoneAndName(System.String,System.String)">
+            <summary>
+            /// 条件查询用户信息(未加入回收站)
+            </summary>
+            <param name="userphone">用户手机号</param>
+            <param name="username">用户姓名</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.GetDeleteUserListPhoneAndName(System.String,System.String)">
+            <summary>
+            /// 条件查询用户信息(已加入回收站)
+            </summary>
+            <param name="userphone">用户手机号</param>
+            <param name="username">用户姓名</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.GetDeleteUserList">
+            <summary>
+            获取回收站用户
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.CreateUserInfo(SmartHealthcare.Service.ViewModel.Tb_sys_UserInfoViewModel)">
+            <summary>
+            新增用户信息(患者注册)
+            </summary>
+            <param name="user">用户视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.CreateDoctorInfo(SmartHealthcare.Service.ViewModel.Tb_sys_DoctorInfoViewModel)">
+            <summary>
+            医生注册
+            </summary>
+            <param name="doctor">医生视图模型</param>
+            <param name="capt">验证码</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.UpLoad(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            文件上传
+            </summary>
+            <param name="file">图片路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.DeleteUser(System.Int32)">
+            <summary>
+            删除该用户信息(真删)
+            </summary>
+            <param name="userid">用户id</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.UpdateDeleteUser(System.Int32)">
+            <summary>
+            逻辑删除
+            </summary>
+            <param name="userid">用户id</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.SelectUserInfo(System.String,System.String)">
+            <summary>
+            患者登录
+            </summary>
+            <param name="admin">账号</param>
+            <param name="pass">密码</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">//捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.SelectDoctorLogin(System.String,System.String)">
+            <summary>
+            医生登录
+            </summary>
+            <param name="phone"></param>
+            <param name="capt"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.VerifyCaptcha(System.String)">
+            <summary>
+            验证码是否正确
+            </summary>
+            <param name="capt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.SMS(System.String,System.Int32)">
+            <summary>
+            注册短信
+            </summary>
+            <param name="phone">手机号</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.Captcha">
+            <summary>
+            生成随机六位数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.Controllers.UserController.UpdateUserInfo(SmartHealthcare.Service.ViewModel.Tb_sys_UserInfoViewModel)">
+            <summary>
+            编辑用户信息
+            </summary>
+            <param name="user">用户视图模型</param>
+            <returns></returns>
+            <exception cref="T:System.Exception">捕获异常</exception>
+        </member>
+        <member name="M:SmartHealthcare.Api.JWT.IJwtuser.JwtJia(SmartHealthcare.Domain.Tb_sys_UserInfo)">
+            <summary>
+            用户登录jwt认证
+            进行加密
+            </summary>
+            <param name="user">用户数据模型</param>
+            <returns></returns>
+        </member>
+        <member name="P:SmartHealthcare.Api.JWT.JwtConfig.Issuer">
+            <summary>
+            Token发布者
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.JWT.JwtConfig.Audience">
+            <summary>
+            Token接受者
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.JWT.JwtConfig.IssuerSigningKey">
+            <summary>
+            秘钥可以构建服务器认可的token；签名秘钥长度最少16
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.JWT.JwtConfig.AccessTokenExpiresMinutes">
+            <summary>
+            过期时间
+            </summary>
+        </member>
+        <member name="F:SmartHealthcare.Api.JWT.JwtUser._jwt">
+            <summary>
+            依赖注入
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.JWT.JwtUser.#ctor(SmartHealthcare.Api.JWT.JwtConfig)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="jwt"></param>
+        </member>
+        <member name="T:SmartHealthcare.Api.log4net.Log4net.LogLevel">
+            <summary>
+            日志等级
+            </summary>
+        </member>
+        <member name="T:SmartHealthcare.Api.log4net.Log4net.Singleton">
+            <summary>
+            单例模式初始化
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Singleton.GetInstance">
+            <summary>
+            单例模式
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Singleton.Init(System.String)">
+            <summary>
+            获取日志初始化器
+            </summary>
+            <param name="type">类名 方法名</param>
+            <returns></returns>
+        </member>
+        <member name="T:SmartHealthcare.Api.log4net.Log4net.Log4netHelper">
+            <summary>
+            日志操作类
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.Repository">
+            <summary>
+            log4net 仓储
+            </summary>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.Error(System.String)">
+            <summary>
+            输出Erro日志
+            </summary>
+            <param name="message">日志内容</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.Warning(System.String)">
+            <summary>
+            输出Warning日志
+            </summary>
+            <param name="message">日志内容</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.Info(System.String)">
+            <summary>
+            输出Info日志
+            </summary>
+            <param name="message">日志内容</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.Debug(System.String)">
+            <summary>
+            输出Debug日志
+            </summary>
+            <param name="message">日志内容</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.WriteLog(SmartHealthcare.Api.log4net.Log4net.LogLevel,System.String,System.String)">
+            <summary>
+            写日志
+            </summary>
+            <param name="logLevel">日志等级</param>
+            <param name="message">日志信息</param>
+            <param name="type">类名 方法名</param>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.ErrorLog(System.String,System.Exception)">
+            <summary>
+            全局异常错误记录持久化
+            </summary>
+            <param name="throwMsg"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="M:SmartHealthcare.Api.log4net.Log4net.Log4netHelper.WriteLog(System.String,System.Exception)">
+            <summary>
+            自定义操作记录，与仓储中的增删改的日志是记录同一张表
+            </summary>
+            <param name="throwMsg"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="T:SmartHealthcare.Api.WeatherForecast">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.WeatherForecast.Date">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.WeatherForecast.TemperatureC">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.WeatherForecast.TemperatureF">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SmartHealthcare.Api.WeatherForecast.Summary">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>
